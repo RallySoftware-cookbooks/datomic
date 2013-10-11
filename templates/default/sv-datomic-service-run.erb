@@ -1,0 +1,6 @@
+#!/bin/sh
+exec 2>&1
+cd <%= node[:datomic][:home_dir] %>
+
+exec chpst -u <%= node[:datomic][:user] %> -U <%= node[:datomic][:user] %> \
+  java -server -cp `bin/classpath` -Xmx<%= node[:datomic][:memory] %> -Xms<%= node[:datomic][:memory] %> <%= node[:datomic][:java_opts] %> clojure.main --main datomic.launcher transactor.properties

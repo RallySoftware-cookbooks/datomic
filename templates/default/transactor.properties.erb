@@ -1,0 +1,19 @@
+protocol=<%= @protocol %>
+host=<%= @hostname %>
+port=4334
+
+license-key=<%= @license_key %>
+
+sql-url=<%= @sql_url %>
+sql-user=<%= @sql_user %>
+sql-password=<%= @sql_password %>
+sql-driver-class=oracle.jdbc.OracleDriver
+
+# Recommended settings for -Xmx4g, ongoing usage.
+memory-index-threshold=32m
+memory-index-max=128m
+object-cache-max=1g
+
+write-concurrency=10
+
+read-concurrency=10
