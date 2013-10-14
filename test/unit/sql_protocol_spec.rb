@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 describe 'datomic::default' do	
-  let(:jdbc_url) { 'http://www.oracle.com/ojdbc_11.0.2.jar' }
+  let(:ojdbc_jar_url) { 'http://www.oracle.com/ojdbc_11.0.2.jar' }
   let(:memory) { '84g' }
   let(:hostname) { 'myhostname' }
   let(:sql_url) { 'http://www.mylittleponies.com/rainbowdash' }
@@ -12,7 +12,7 @@ describe 'datomic::default' do
     ChefSpec::ChefRunner.new do |node|
       node.automatic_attrs[:hostname] = hostname
       node.set[:datomic][:memory] = memory
-      node.set[:datomic][:jdbc_url] = jdbc_url      
+      node.set[:datomic][:ojdbc_jar_url] = ojdbc_jar_url      
       node.set[:datomic][:sql_user] = sql_user
       node.set[:datomic][:sql_password] = sql_password
       node.set[:datomic][:sql_url] = sql_url

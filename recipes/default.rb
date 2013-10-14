@@ -67,15 +67,15 @@ link temporary_zip_dir do
 end
 
 if(protocol == 'sql')
-  jdbc_url = node[:datomic][:jdbc_url]
+  ojdbc_jar_url = node[:datomic][:ojdbc_jar_url]
 
-  raise 'You must set node[:datomic][:jdbc_url]' if jdbc_url.nil?
+  raise 'You must set node[:datomic][:ojdbc_jar_url]' if ojdbc_jar_url.nil?
   raise 'The sql protocol requires a datomic license, specify with node[:datomic][:datomic_license_key]' if node[:datomic][:datomic_license_key].nil?
 
   ojdbc_file = "#{datomic_run_dir}/lib/ojdbc.jar"
 
   remote_file ojdbc_file do
-    source jdbc_url
+    source ojdbc_jar_url
     owner username
     group username
   end
