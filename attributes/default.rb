@@ -11,6 +11,7 @@ default[:datomic][:memory] = '4g'
 default[:datomic][:protocol] = 'free'
 
 default[:datomic][:ojdbc_jar_url] = nil
+default[:datomic][:ojdbc_jar_checksum] = nil
 default[:datomic][:sql_user] = nil
 default[:datomic][:sql_password] = nil
 default[:datomic][:sql_url] = nil

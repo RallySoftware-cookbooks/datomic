@@ -62,8 +62,8 @@ execute "chown -R #{username}:#{username} #{user_home_dir}"
 
 datomic_run_dir = "#{user_home_dir}/datomic"
 
-link temporary_zip_dir do
-  to datomic_run_dir
+link datomic_run_dir do
+  to temporary_zip_dir
 end
 
 if(protocol == 'sql')
@@ -78,6 +78,7 @@ if(protocol == 'sql')
     source ojdbc_jar_url
     owner username
     group username
+    checksum node[:datomic][:ojdbc_jar_checksum]
   end
 end
 
@@ -98,4 +99,5 @@ end
 
 runit_service 'datomic-service' do
   default_logger true
+  action [:enable, :restart]
 end
