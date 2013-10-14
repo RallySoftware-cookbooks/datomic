@@ -36,7 +36,7 @@ user username do
 end
 
 download_dir = Chef::Config[:file_cache_path]
-install_dir = node[:datomic][:install_dir]
+user_home_dir = node[:datomic][:user_home_dir]
 local_file_path = "#{download_dir}/datomic-#{node[:datomic][:full_version]}.zip"
 
 remote_file local_file_path do
@@ -46,20 +46,18 @@ remote_file local_file_path do
   checksum node[:datomic][:checksum]
 end
 
-directory install_dir do
+directory user_home_dir do
 	owner username
 	group username
 	mode 00755
 end
 
-execute "unzip #{local_file_path} -d #{install_dir}" do
+execute "unzip #{local_file_path} -d #{user_home_dir}" do
   cwd download_dir
-  not_if { ::File.exists?("#{install_dir}/datomic-#{node[:datomic][:full_version]}") }   
+  not_if { ::File.exists?("#{user_home_dir}/datomic-#{node[:datomic][:full_version]}") }   
 end
 
-execute "chown -R #{username}:#{username} #{install_dir}"
-
-################# Start Datomic
+execute "chown -R #{username}:#{username} #{user_home_dir}"
 
 if(protocol == 'sql')
   jdbc_url = node[:datomic][:jdbc_url]

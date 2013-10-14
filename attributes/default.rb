@@ -6,8 +6,8 @@ default[:datomic][:url] = "http://downloads.datomic.com/#{node[:datomic][:versio
 
 default[:datomic][:checksum] = '88fda52a9a19'
 default[:datomic][:user] = 'datomic'
-default[:datomic][:install_dir] = "/home/#{node[:datomic][:user]}"
-default[:datomic][:home_dir] = "#{node[:datomic][:install_dir]}/datomic-#{node[:datomic][:full_version]}"
+default[:datomic][:user_home_dir] = "/home/#{node[:datomic][:user]}"
+default[:datomic][:home_dir] = "#{node[:datomic][:user_home_dir]}/datomic-#{node[:datomic][:full_version]}"
 default[:datomic][:memory] = '4g'
 default[:datomic][:protocol] = 'free'
 
