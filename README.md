@@ -20,13 +20,11 @@ See `attributes/default.rb` for default values
 * `node[:datomic][:user]` = user to install datomic under
 * `node[:datomic][:memory]` = Memory to allocate to the transactor
 * `node[:datomic][:protocol]` = Transactor protocol to use
-
 * `node[:datomic][:ojdbc_jar_url]` = URL to download oracle jdbc jar
 * `node[:datomic][:ojdbc_jar_checksum]` = checksum for ojdbc jar
 * `node[:datomic][:sql_user]` = user to connect to sql database with
 * `node[:datomic][:sql_password]` = password to connect to sql database with
 * `node[:datomic][:sql_url]` = sql database connection string
-
 * `node[:datomic][:datomic_license_key]` = datomic license key
 * `node[:datomic][:java_opts]` = additional options to specify to java process
 
