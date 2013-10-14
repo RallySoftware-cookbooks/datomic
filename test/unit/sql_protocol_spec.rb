@@ -26,12 +26,12 @@ describe 'datomic::default' do
   
   subject { chef_run }
 
-  let(:ojdbc_jar_path) { "#{node[:datomic][:home_dir]}/lib/ojdbc.jar" }
+  let(:ojdbc_jar_path) { "#{node[:datomic][:user_home_dir]}/datomic/lib/ojdbc.jar" }
   
   it { should create_remote_file(ojdbc_jar_path).with(:owner => node[:datomic][:user]) }
 
   context 'transactor.properties template' do
-    subject { chef_run.template("#{node[:datomic][:home_dir]}/transactor.properties") }
+    subject { chef_run.template("#{node[:datomic][:user_home_dir]}/datomic/transactor.properties") }
 
     its(:owner) { should eql 'datomic' }
     its(:group) { should eql 'datomic' }

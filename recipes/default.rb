@@ -28,7 +28,6 @@ include_recipe 'java'
 include_recipe 'runit'
 
 username = node[:datomic][:user]
-home_dir = node[:datomic][:home_dir]
 protocol = node[:datomic][:protocol]
 
 user username do
@@ -52,12 +51,20 @@ directory user_home_dir do
 	mode 00755
 end
 
+temporary_zip_dir = "#{user_home_dir}/datomic-#{node[:datomic][:full_version]}"
+
 execute "unzip #{local_file_path} -d #{user_home_dir}" do
   cwd download_dir
-  not_if { ::File.exists?("#{user_home_dir}/datomic-#{node[:datomic][:full_version]}") }   
+  not_if { ::File.exists?(temporary_zip_dir) }   
 end
 
 execute "chown -R #{username}:#{username} #{user_home_dir}"
+
+datomic_run_dir = "#{user_home_dir}/datomic"
+
+link temporary_zip_dir do
+  to datomic_run_dir
+end
 
 if(protocol == 'sql')
   jdbc_url = node[:datomic][:jdbc_url]
@@ -65,7 +72,7 @@ if(protocol == 'sql')
   raise 'You must set node[:datomic][:jdbc_url]' if jdbc_url.nil?
   raise 'The sql protocol requires a datomic license, specify with node[:datomic][:datomic_license_key]' if node[:datomic][:datomic_license_key].nil?
 
-  ojdbc_file = "#{home_dir}/lib/ojdbc.jar"
+  ojdbc_file = "#{datomic_run_dir}/lib/ojdbc.jar"
 
   remote_file ojdbc_file do
     source jdbc_url
@@ -74,7 +81,7 @@ if(protocol == 'sql')
   end
 end
 
-template "#{home_dir}/transactor.properties" do
+template "#{datomic_run_dir}/transactor.properties" do
   source 'transactor.properties.erb'
   owner username
   group username
