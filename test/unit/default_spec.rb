@@ -1,17 +1,20 @@
 require_relative 'spec_helper'
 
-describe 'datomic::default' do	
-	let (:full_version) { 'free-1.2.3' }
-	let (:local_file_path) { "#{Chef::Config[:file_cache_path]}/datomic-#{full_version}.zip" }
+describe 'datomic::default' do
+  let (:free) { false }
+  let (:full_version) { 'pro-1.2.3' }
+  let (:version) { '1.2.3' }
 	let (:datomic_user) { 'theuser' }
-	let (:user_home_dir) { '/home/theuser/the_user_home_dir' }
   let (:checksum) { '88fda52a9bcd' }
+  let (:user_home_dir) { "/home/#{datomic_user}" }
+  let (:download_dir) { Chef::Config[:file_cache_path] }
+  let (:local_file_path) { "#{download_dir}/datomic-#{full_version}.zip" }
 
 	let :chef_runner do 
     ChefSpec::ChefRunner.new do |node|
-      node.set[:datomic][:full_version] = full_version
+      node.set[:datomic][:free] = free
+      node.set[:datomic][:version] = version
       node.set[:datomic][:user] = datomic_user
-      node.set[:datomic][:user_home_dir] = user_home_dir
       node.set[:datomic][:checksum] = checksum
     end
   end
@@ -22,7 +25,7 @@ describe 'datomic::default' do
 
   it { should create_user datomic_user }
 
-  it { should create_remote_file(local_file_path).with(
+  it { should create_remote_file("#{local_file_path}").with(
     :owner => datomic_user,
     :checksum => checksum
     )}

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/RallySoftware-cookbooks/cookbook-development
-  revision: e4226be4072462f3215a07565de0ab61a9536ba0
+  revision: d1dafd6983cc59ee06962d26c007362fea6fa5fa
   specs:
     cookbook-development (0.0.1)
       berkshelf (~> 2.0)
@@ -87,7 +87,7 @@ GEM
       net-ssh
       ohai
     ffi (1.9.0)
-    foodcritic (3.0.2)
+    foodcritic (3.0.3)
       erubis
       gherkin (~> 2.11.7)
       nokogiri (~> 1.5.4)
@@ -131,7 +131,7 @@ GEM
     mixlib-config (1.1.2)
     mixlib-log (1.6.0)
     mixlib-shellout (1.2.0)
-    multi_json (1.8.1)
+    multi_json (1.8.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     net-http-persistent (2.9)

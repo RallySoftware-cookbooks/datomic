@@ -1,12 +1,8 @@
 default[:datomic][:version] = '0.8.4215'
 default[:datomic][:free] = true
-license_type = node[:datomic][:free] ? 'free' : 'pro'
-default[:datomic][:full_version] = license_type + '-' + default[:datomic][:version]
-default[:datomic][:url] = "http://downloads.datomic.com/#{node[:datomic][:version]}/datomic-#{node[:datomic][:full_version]}.zip"
 
 default[:datomic][:checksum] = '88fda52a9a19'
 default[:datomic][:user] = 'datomic'
-default[:datomic][:user_home_dir] = "/home/#{node[:datomic][:user]}"
 default[:datomic][:memory] = '4g'
 default[:datomic][:protocol] = 'free'
 

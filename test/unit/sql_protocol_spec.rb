@@ -7,6 +7,7 @@ describe 'datomic::default' do
   let(:sql_url) { 'http://www.mylittleponies.com/rainbowdash' }
   let(:sql_user) { 'Steve Dave' }
   let(:sql_password) { 'youtellem' }
+  let(:datomic_user) { 'theuser' }
   let(:license_key) { 'asdfaqwer12341234aasdfa12341341adfasdfaf' }
   let :chef_runner do 
     ChefSpec::ChefRunner.new do |node|
@@ -18,6 +19,8 @@ describe 'datomic::default' do
       node.set[:datomic][:sql_url] = sql_url
       node.set[:datomic][:datomic_license_key] = license_key
       node.set[:datomic][:protocol] = 'sql'
+      node.set[:datomic][:free] = false
+      node.set[:datomic][:user] = datomic_user
     end
   end
 
@@ -26,15 +29,15 @@ describe 'datomic::default' do
   
   subject { chef_run }
 
-  let(:ojdbc_jar_path) { "#{node[:datomic][:user_home_dir]}/datomic/lib/ojdbc.jar" }
+  let(:ojdbc_jar_path) { "/home/#{datomic_user}/datomic/lib/ojdbc.jar" }
   
-  it { should create_remote_file(ojdbc_jar_path).with(:owner => node[:datomic][:user]) }
+  it { should create_remote_file(ojdbc_jar_path).with(:owner => datomic_user) }
 
   context 'transactor.properties template' do
-    subject { chef_run.template("#{node[:datomic][:user_home_dir]}/datomic/transactor.properties") }
+    subject { chef_run.template("/home/#{datomic_user}/datomic/transactor.properties") }
 
-    its(:owner) { should eql 'datomic' }
-    its(:group) { should eql 'datomic' }
+    its(:owner) { should eql datomic_user }
+    its(:group) { should eql datomic_user }
     its(:mode)  { should eql 00755 }
 
     it 'should use variables' do

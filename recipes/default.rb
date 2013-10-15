@@ -30,16 +30,21 @@ include_recipe 'runit'
 username = node[:datomic][:user]
 protocol = node[:datomic][:protocol]
 
+license_type = node[:datomic][:free] ? 'free' : 'pro'
+full_version = license_type + '-' + node[:datomic][:version]
+datomic_download_url = "http://downloads.datomic.com/#{node[:datomic][:version]}/datomic-#{full_version}.zip"
+
+download_dir = Chef::Config[:file_cache_path]
+user_home_dir = "/home/#{node[:datomic][:user]}"
+local_file_path = "#{download_dir}/datomic-#{full_version}.zip"
+datomic_run_dir = "#{user_home_dir}/datomic"
+
 user username do
   action :create
 end
 
-download_dir = Chef::Config[:file_cache_path]
-user_home_dir = node[:datomic][:user_home_dir]
-local_file_path = "#{download_dir}/datomic-#{node[:datomic][:full_version]}.zip"
-
 remote_file local_file_path do
-	source node[:datomic][:url]
+	source datomic_download_url
 	owner username
 	group username
   checksum node[:datomic][:checksum]
@@ -51,7 +56,7 @@ directory user_home_dir do
 	mode 00755
 end
 
-temporary_zip_dir = "#{user_home_dir}/datomic-#{node[:datomic][:full_version]}"
+temporary_zip_dir = "#{user_home_dir}/datomic-#{full_version}"
 
 execute "unzip #{local_file_path} -d #{user_home_dir}" do
   cwd download_dir
@@ -59,8 +64,6 @@ execute "unzip #{local_file_path} -d #{user_home_dir}" do
 end
 
 execute "chown -R #{username}:#{username} #{user_home_dir}"
-
-datomic_run_dir = "#{user_home_dir}/datomic"
 
 link datomic_run_dir do
   to temporary_zip_dir
