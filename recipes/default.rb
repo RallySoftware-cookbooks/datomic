@@ -25,7 +25,7 @@
 #
 
 include_recipe 'java'
-include_recipe 'runit'
+include_recipe 'java-service'
 
 username = node[:datomic][:user]
 protocol = node[:datomic][:protocol]
@@ -100,7 +100,11 @@ template "#{datomic_run_dir}/transactor.properties" do
   )
 end
 
-runit_service 'datomic-service' do
-  default_logger true
-  action [:enable, :restart]
+java_service 'datomic' do
+  user username
+  working_dir datomic_run_dir
+  standard_options({:server => nil})
+  main_class 'clojure.main'  
+  classpath Proc.new { Mixlib::ShellOut.new('bin/classpath', :cwd => datomic_run_dir).run_command.stdout.strip }
+  args(['--main', 'datomic.launcher', 'transactor.properties'])
 end

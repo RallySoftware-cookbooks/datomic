@@ -3,7 +3,6 @@ default[:datomic][:free] = true
 
 default[:datomic][:checksum] = '88fda52a9a19'
 default[:datomic][:user] = 'datomic'
-default[:datomic][:memory] = '4g'
 default[:datomic][:protocol] = 'free'
 
 default[:datomic][:ojdbc_jar_url] = nil
@@ -14,4 +13,14 @@ default[:datomic][:sql_url] = nil
 
 default[:datomic][:datomic_license_key] = nil
 
-default[:datomic][:java_opts] = '-XX:NewRatio=4 -XX:SurvivorRatio=8 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:CMSInitiatingOccupancyFraction=60 -XX:+UseCMSInitiatingOccupancyOnly -XX:+CMSScavengeBeforeRemark'
+default[:datomic][:java][:'-'][:server] = nil
+default[:datomic][:java][:'-X'][:ms] = '4g'
+default[:datomic][:java][:'-X'][:mx] = '4g'
+default[:datomic][:java][:'-XX'][:NewRatio] = '4'
+default[:datomic][:java][:'-XX'][:SurvivorRatio] = '8'
+default[:datomic][:java][:'-XX'][:UseConcMarkSweepGC] = true
+default[:datomic][:java][:'-XX'][:UseParNewGC] = true
+default[:datomic][:java][:'-XX'][:CMSParallelRemarkEnabled] = true
+default[:datomic][:java][:'-XX'][:CMSInitiatingOccupancyFraction] = '60'
+default[:datomic][:java][:'-XX'][:UseCMSInitiatingOccupancyOnly] = true
+default[:datomic][:java][:'-XX'][:CMSScavengeBeforeRemark] = true

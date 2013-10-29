@@ -1,6 +1,5 @@
 ---
 driver_plugin: vagrant
-provisioner: chef_zero
 platforms:
 - name: centos-6.4-x86_64
   driver_config:
@@ -18,4 +17,7 @@ suites:
     - recipe[datomic]
   attributes:
     datomic:
-      memory: 64m
+      java:
+        '-X':
+          ms: 64m
+          mx: 64m

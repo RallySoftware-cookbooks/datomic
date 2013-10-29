@@ -7,7 +7,7 @@ List the supported platforms from the metadata.rb file -
 * Centos 6.4
 
 ### Dependencies
-This cookbook includes 'java::default' and 'runit::default'
+This cookbook includes 'java::default' and 'java-service::default'
 
 ## Attributes
 ### default
