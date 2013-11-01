@@ -34,8 +34,6 @@ license_type = node[:datomic][:free] ? 'free' : 'pro'
 full_version = license_type + '-' + node[:datomic][:version]
 datomic_download_url = node[:datomic][:download_url] || "https://my.datomic.com/downloads/#{license_type}/#{node[:datomic][:version]}"
 
-puts "DDD #{datomic_download_url}"
-
 download_dir = Chef::Config[:file_cache_path]
 user_home_dir = "/home/#{node[:datomic][:user]}"
 local_file_path = "#{download_dir}/datomic-#{full_version}.zip"
