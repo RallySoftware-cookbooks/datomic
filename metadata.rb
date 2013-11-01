@@ -9,4 +9,4 @@ version          IO.read(File.join(File.dirname(__FILE__), 'VERSION')) rescue '0
 supports 'centos'
 
 depends 'java'
-depends 'java-service', '0.1.6'
+depends 'java-service', '~> 0.1'
