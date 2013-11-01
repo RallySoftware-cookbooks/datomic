@@ -13,7 +13,6 @@ default[:datomic][:sql_url] = nil
 
 default[:datomic][:datomic_license_key] = nil
 
-default[:datomic][:java][:'-'][:server] = nil
 default[:datomic][:java][:'-X'][:ms] = '4g'
 default[:datomic][:java][:'-X'][:mx] = '4g'
 default[:datomic][:java][:'-XX'][:NewRatio] = '4'
