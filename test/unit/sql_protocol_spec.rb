@@ -10,7 +10,7 @@ describe 'datomic::default' do
   let(:datomic_user) { 'theuser' }
   let(:license_key) { 'asdfaqwer12341234aasdfa12341341adfasdfaf' }
   let :chef_runner do 
-    ChefSpec::ChefRunner.new do |node|
+    ChefSpec::Runner.new do |node|
       node.automatic_attrs[:hostname] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:ojdbc_jar_url] = ojdbc_jar_url      

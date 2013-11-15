@@ -11,7 +11,7 @@ describe 'datomic::default' do
   let (:local_file_path) { "#{download_dir}/datomic-#{full_version}.zip" }
 
 	let :chef_runner do 
-    ChefSpec::ChefRunner.new do |node|
+    ChefSpec::Runner.new do |node|
       node.set[:datomic][:free] = free
       node.set[:datomic][:version] = version
       node.set[:datomic][:user] = datomic_user
