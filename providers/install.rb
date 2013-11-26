@@ -1,14 +1,9 @@
 use_inline_resources
 
+include Chef::Datomic::Attributes
+include Chef::Datomic::Status
+
 action :install do
-  username = new_resource.name
-  user_home_dir = "/home/#{username}"
-  download_dir = Chef::Config[:file_cache_path]
-  license_type = node[:datomic][:free] ? 'free' : 'pro'
-  full_version = license_type + '-' + node[:datomic][:version]
-  local_file_path = "#{download_dir}/datomic-#{full_version}.zip"
-  datomic_download_url = node[:datomic][:download_url] || "https://my.datomic.com/downloads/#{license_type}/#{node[:datomic][:version]}"
-  datomic_run_dir = "#{user_home_dir}/datomic"
 
   remote_file local_file_path do
     source datomic_download_url
@@ -17,14 +12,10 @@ action :install do
     checksum node[:datomic][:checksum]
   end
 
-  temporary_zip_dir = "#{user_home_dir}/datomic-#{full_version}"
-
-  execute "unzip #{local_file_path} -d #{user_home_dir}" do
+  execute "unzip #{local_file_path} -d #{home_dir}" do
     cwd download_dir
     not_if { ::File.exists?(temporary_zip_dir) }
   end
-
-  execute "chown -R #{username}:#{username} #{user_home_dir}"
 
   link datomic_run_dir do
     to temporary_zip_dir
@@ -63,4 +54,28 @@ action :install do
     )
   end
 
+  run_necessary_actions
+
+  run_dir = datomic_run_dir
+
+  java_service 'datomic' do
+    action :nothing
+    user username
+    working_dir run_dir
+    standard_options({:server => nil})
+    main_class 'clojure.main'
+    classpath Proc.new { Mixlib::ShellOut.new('bin/classpath', :cwd => run_dir).run_command.stdout.strip }
+    args(['--main', 'datomic.launcher', 'transactor.properties'])
+    pill_file_dir run_dir
+    log_file "#{run_dir}/datomic.log"
+  end
+
+end
+
+def load_current_resource
+  current_resource = Chef::Resource::DataomicInstallResource.new(new_resource.name)
+  current_resource.running = is_running?
+  current_resource.running_version = running_version
+  current_resource.already_installed = already_installed?
+  current_resource
 end

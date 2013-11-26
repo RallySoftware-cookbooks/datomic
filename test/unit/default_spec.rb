@@ -23,15 +23,6 @@ describe 'datomic::default' do
 
   subject { chef_run }
 
-  it { should create_user datomic_user }
-
-  it { should create_remote_file("#{local_file_path}").with(
-    :owner => datomic_user,
-    :checksum => checksum
-    )}
-
-  it { should create_directory(user_home_dir) }
-
   context 'install directory' do
   	subject { chef_run.directory(user_home_dir) }
   	its(:owner) { should be datomic_user }
@@ -42,5 +33,6 @@ describe 'datomic::default' do
   it { should run_execute("unzip #{local_file_path} -d #{user_home_dir}").with(:cwd => Chef::Config[:file_cache_path]) }
 
   it { should run_execute("chown -R #{datomic_user}:#{datomic_user} #{user_home_dir}") }
+
 end
 

@@ -1,15 +1,18 @@
 use_inline_resources
 
+include Chef::Datomic::Attributes
+
 action :create do
-  username = new_resource.name
-  user_home_dir = "/home/#{username}"
+  # attributes = ::DatomicAttributes.new(node, new_resource)
 
   user username
 
-  directory user_home_dir do
+  directory home_dir do
     owner username
     group username
     mode 00755
   end
+
+  execute "chown -R #{username}:#{username} #{home_dir}"
 
 end
