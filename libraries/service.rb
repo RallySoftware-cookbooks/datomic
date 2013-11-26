@@ -3,7 +3,6 @@ require_relative 'status'
 class Chef
   module Datomic
     module Service
-
       include Chef::Datomic::Status
 
       def service_actions

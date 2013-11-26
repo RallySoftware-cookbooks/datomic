@@ -22,6 +22,10 @@ class Chef
         end
       end
 
+      def version_changing?
+        node[:datomic][:version] != running_version
+      end
+
       private
 
       def datomic_status
