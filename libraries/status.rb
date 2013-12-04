@@ -1,7 +1,7 @@
-class Chef
-  module Datomic
+module DatomicLibrary
+  module Mixin
     module Status
-      include Chef::Datomic::Attributes
+      include DatomicLibrary::Mixin::Attributes
       include Chef::Mixin::ShellOut
 
       def already_installed?
@@ -29,7 +29,7 @@ class Chef
       private
 
       def datomic_status
-        @status ||= shell_out("ps auxw |grep -v grep | grep datomic-transactor").run_command
+        @status ||= shell_out('ps auxw | grep -v grep | grep datomic-transactor').run_command
       end
     end
   end

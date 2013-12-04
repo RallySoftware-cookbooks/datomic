@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'attributes' do
+describe 'DatomicLibrary::Mixin::Attributes' do
 
   let(:instance_name) { 'test_instance' }
   let(:new_resource) { Chef::Resource.new(instance_name) }
@@ -19,19 +19,18 @@ describe 'attributes' do
 
   subject { AttributeLibraryWrapper.new(node, new_resource) }
 
-  its(:username) { should eql 'test_instance' }
+  its(:username) { should eql instance_name }
 
-  its(:home_dir) { should eql "/home/test_instance"}
+  its(:home_dir) { should eql "/home/#{instance_name}" }
 
-  its(:datomic_run_dir) { should eql "/home/test_instance/datomic" }
+  its(:datomic_run_dir) { should eql "/home/#{instance_name}/datomic" }
 
   its(:download_dir) { should eql download_dir }
 
-  its(:temporary_zip_dir) { should eql "/home/test_instance/datomic-free-#{version}"}
+  its(:temporary_zip_dir) { should eql "/home/#{instance_name}/datomic-free-#{version}" }
 
-  context 'free version' do
-
-    describe 'is true' do
+  context 'when node[:datomic][:free] is' do
+    describe 'true' do
       let(:full_version) { "free-#{version}" }
 
       its(:license_type) { should eql 'free' }
@@ -41,7 +40,7 @@ describe 'attributes' do
       its(:local_file_path) { should eql "#{download_dir}/datomic-#{full_version}.zip" }
     end
 
-    describe 'is false' do
+    describe 'false' do
       let(:free) { false }
       let(:full_version) { "pro-#{version}" }
 
@@ -51,12 +50,10 @@ describe 'attributes' do
 
       its(:local_file_path) { should eql "#{download_dir}/datomic-#{full_version}.zip" }
     end
-
   end
 
-  context 'download url' do
-
-    describe 'specified as node attribute' do
+  context 'when download url' do
+    describe 'is specified as node attribute' do
       let(:download_url) { 'http://download.datomic.com/foo.zip' }
       its(:datomic_download_url) { should eql download_url }
     end
@@ -69,7 +66,7 @@ describe 'attributes' do
 end
 
 class AttributeLibraryWrapper
-  include Chef::Datomic::Attributes
+  include DatomicLibrary::Mixin::Attributes
 
   attr_reader :node, :new_resource
 

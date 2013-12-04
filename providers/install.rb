@@ -1,7 +1,7 @@
 use_inline_resources
 
-include Chef::Datomic::Attributes
-include Chef::Datomic::Status
+include DatomicLibrary::Mixin::Attributes
+include DatomicLibrary::Mixin::Status
 
 action :install do
 
@@ -54,12 +54,15 @@ action :install do
     )
   end
 
-  run_necessary_actions
-
   run_dir = datomic_run_dir
 
   java_service 'datomic' do
-    action :nothing
+    action [:stop]
+    only_if { is_running? && version_changing? }
+  end
+
+  java_service 'datomic' do
+    action [:create, :enable, :load, :start]
     user username
     working_dir run_dir
     standard_options({:server => nil})
@@ -68,14 +71,12 @@ action :install do
     args(['--main', 'datomic.launcher', 'transactor.properties'])
     pill_file_dir run_dir
     log_file "#{run_dir}/datomic.log"
+    only_if { version_changing? }
   end
 
-end
+  java_service 'datomic' do
+    action :restart
+    only_if { is_running? && !version_changing? }
+  end
 
-def load_current_resource
-  current_resource = Chef::Resource::DataomicInstallResource.new(new_resource.name)
-  current_resource.running = is_running?
-  current_resource.running_version = running_version
-  current_resource.already_installed = already_installed?
-  current_resource
 end

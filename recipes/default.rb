@@ -25,8 +25,7 @@
 #
 
 include_recipe 'java'
-include_recipe 'java-service'
+include_recipe 'java_service'
 
 datomic_user node[:datomic][:user]
 datomic_install node[:datomic][:user]
-datomic_service node[:datomic][:user]

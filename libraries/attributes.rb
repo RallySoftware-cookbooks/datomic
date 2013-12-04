@@ -1,5 +1,5 @@
-class Chef
-  module Datomic
+module DatomicLibrary
+  module Mixin
     module Attributes
 
       def username

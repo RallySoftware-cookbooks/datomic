@@ -1,9 +1,8 @@
 use_inline_resources
 
-include Chef::Datomic::Attributes
+include DatomicLibrary::Mixin::Attributes
 
 action :create do
-  # attributes = ::DatomicAttributes.new(node, new_resource)
 
   user username
 

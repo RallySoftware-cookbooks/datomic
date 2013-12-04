@@ -139,7 +139,7 @@ describe 'status' do
 end
 
 class StatusLibraryWrapper
-  include Chef::Datomic::Status
+  include DatomicLibrary::Mixin::Status
 
   attr_reader :node, :new_resource
 

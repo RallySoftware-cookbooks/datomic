@@ -26,3 +26,11 @@ end
 def already_installed?
   @installed
 end
+
+def version_changing=(changing)
+  @changing = changing
+end
+
+def version_changing?
+  @changing
+end
