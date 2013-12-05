@@ -22,8 +22,12 @@ module DatomicLibrary
         node[:datomic][:free] ? 'free' : 'pro'
       end
 
+      def version
+        new_resource.version || node[:datomic][:version]
+      end
+
       def full_version
-        "#{license_type}-#{node[:datomic][:version]}"
+        "#{license_type}-#{version}"
       end
 
       def local_file_path
@@ -31,7 +35,7 @@ module DatomicLibrary
       end
 
       def datomic_download_url
-        node[:datomic][:download_url] || "https://my.datomic.com/downloads/#{license_type}/#{node[:datomic][:version]}"
+        node[:datomic][:download_url] || "https://my.datomic.com/downloads/#{license_type}/#{version}"
       end
 
       def temporary_zip_dir

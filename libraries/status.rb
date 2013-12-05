@@ -2,7 +2,6 @@ module DatomicLibrary
   module Mixin
     module Status
       include DatomicLibrary::Mixin::Attributes
-      include Chef::Mixin::ShellOut
 
       def already_installed?
         ::File.symlink?(datomic_run_dir)
@@ -15,7 +14,7 @@ module DatomicLibrary
       def running_version
         if(is_running?)
           output = datomic_status.stdout
-          match = output.match(/datomic-transactor-(pro|free)-(\d+\.\d+.\d+)/)
+          match = output.match(/datomic-(pro|free)-transactor-(\d+\.\d+.\d+)/)
           if match
             match[2]
           end
@@ -29,7 +28,7 @@ module DatomicLibrary
       private
 
       def datomic_status
-        @status ||= shell_out('ps auxw | grep -v grep | grep datomic-transactor').run_command
+         Mixlib::ShellOut.new('ps auxw | grep -v grep | grep datomic | grep transactor').run_command
       end
     end
   end

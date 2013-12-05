@@ -17,8 +17,12 @@ action :install do
     not_if { ::File.exists?(temporary_zip_dir) }
   end
 
+  execute "chown -R #{username}:#{username} #{temporary_zip_dir}"
+
   link datomic_run_dir do
     to temporary_zip_dir
+    owner username
+    group username
   end
 
   protocol = node[:datomic][:protocol]
@@ -43,6 +47,7 @@ action :install do
     source 'transactor.properties.erb'
     owner username
     group username
+    cookbook 'datomic'
     mode 00755
     variables(
       :hostname => node[:hostname],
@@ -56,9 +61,15 @@ action :install do
 
   run_dir = datomic_run_dir
 
+  should_destroy = is_running? && version_changing?
+
   java_service 'datomic' do
     action [:stop]
-    only_if { is_running? && version_changing? }
+    only_if { should_destroy }
+  end
+
+  execute '/opt/chef/embedded/bin/bluepill unmonitor datomic' do
+    only_if { should_destroy }
   end
 
   java_service 'datomic' do

@@ -76,21 +76,21 @@ describe 'status' do
     context 'when process running pro version' do
       let(:status_code) { 0 }
       let(:version) { '0.1.2' }
-      let(:stdout) { "blah:blah:blah:datomic-transactor-pro-#{version}.jar:blah:blah:blah" }
+      let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{version}.jar:blah:blah:blah" }
       its(:running_version) { should eql version }
     end
 
     context 'when process running free version' do
       let(:status_code) { 0 }
       let(:version) { '3.4.5' }
-      let(:stdout) { "blah:blah:blah:datomic-transactor-free-#{version}.jar:blah:blah:blah" }
+      let(:stdout) { "blah:blah:blah:datomic-free-transactor-#{version}.jar:blah:blah:blah" }
       its(:running_version) { should eql version }
     end
 
     context 'when process running, version string not recognized' do
       let(:status_code) { 0 }
       let(:version) { '7' }
-      let(:stdout) { "blah:blah:blah:datomic-transactor-free-#{version}.jar:blah:blah:blah" }
+      let(:stdout) { "blah:blah:blah:datomic-free-transactor-#{version}.jar:blah:blah:blah" }
       its(:running_version) { should eql nil }
     end
 
@@ -100,7 +100,7 @@ describe 'status' do
     let(:old_version) { '0.1.2' }
     let(:new_version) { '1.2.3' }
     let(:status_code) { 0 }
-    let(:stdout) { "blah:blah:blah:datomic-transactor-pro-#{old_version}.jar:blah:blah:blah" }
+    let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{old_version}.jar:blah:blah:blah" }
     let(:node) do
       node = Chef::Node.new
       node.set[:datomic][:version] = new_version
@@ -130,7 +130,7 @@ describe 'status' do
     end
 
     context 'when process running the same version' do
-      let(:stdout) { "blah:blah:blah:datomic-transactor-pro-#{new_version}.jar:blah:blah:blah" }
+      let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{new_version}.jar:blah:blah:blah" }
       its(:version_changing?) { should be_false }
     end
 

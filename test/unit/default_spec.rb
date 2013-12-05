@@ -9,7 +9,6 @@ describe 'datomic::default' do
     end.converge described_recipe
   end
 
-  it { should include_recipe 'java' }
   it { should include_recipe 'java_service' }
 
   it { should create_datomic_user datomic_user }

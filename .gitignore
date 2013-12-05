@@ -1,5 +1,4 @@
 .vagrant
-Berksfile.lock
 *~
 *#
 .#*
@@ -15,6 +14,7 @@ vendor/
 bin/*
 .bundle/*
 
+.kitchen.local.yml
 .kitchen/
 
 .DS_Store

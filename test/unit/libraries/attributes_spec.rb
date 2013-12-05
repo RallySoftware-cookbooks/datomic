@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe 'DatomicLibrary::Mixin::Attributes' do
 
   let(:instance_name) { 'test_instance' }
-  let(:new_resource) { Chef::Resource.new(instance_name) }
+  let(:new_resource) { DatomicResource.new(instance_name) }
   let(:download_dir) { Chef::Config[:file_cache_path] }
   let(:download_url) { nil }
   let(:free) { true }
@@ -61,6 +61,28 @@ describe 'DatomicLibrary::Mixin::Attributes' do
     describe 'is not specified as node attribute' do
       its(:datomic_download_url) { should eql "https://my.datomic.com/downloads/#{subject.license_type}/#{version}" }
     end
+  end
+
+  context 'when version' do
+    describe 'is taken from attribute' do
+      its(:version) { should eql version }
+    end
+
+    describe 'is specified in resource' do
+      let(:version) { '5678' }
+      before(:each) { new_resource.version = version }
+
+      its(:version) { should eql version }
+    end
+  end
+end
+
+class DatomicResource < Chef::Resource
+
+  attr_accessor :version
+
+  def initialize(name)
+    super(name)
   end
 
 end

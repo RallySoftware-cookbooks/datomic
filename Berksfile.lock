@@ -1,0 +1,28 @@
+{
+  "sources": {
+    "datomic": {
+      "path": "."
+    },
+    "integration": {
+      "path": "./test/cookbooks/integration"
+    },
+    "java": {
+      "locked_version": "1.13.0"
+    },
+    "windows": {
+      "locked_version": "1.10.0"
+    },
+    "chef_handler": {
+      "locked_version": "1.1.4"
+    },
+    "java_service": {
+      "locked_version": "0.1.15"
+    },
+    "bluepill": {
+      "locked_version": "2.3.1"
+    },
+    "rsyslog": {
+      "locked_version": "0.1.0"
+    }
+  }
+}

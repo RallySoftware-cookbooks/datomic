@@ -9,6 +9,15 @@ GIT
       rspec (~> 2.14)
 
 GIT
+  remote: git://github.com/adnichols/kitchen-docker.git
+  revision: 7d03f1f89cd93e71d08618a0e00a1397214a58af
+  ref: docker-ruby-api
+  specs:
+    kitchen-docker (0.13.0)
+      docker-api (~> 1.7)
+      test-kitchen (>= 1.0.0.rc.2)
+
+GIT
   remote: https://github.com/RallySoftware-cookbooks/cookbook-development
   revision: dbe2f10006dc3de8e4910fddd9649f2b89407768
   specs:
@@ -34,6 +43,7 @@ GEM
     akami (1.2.0)
       gyoku (>= 0.4.0)
       nokogiri (>= 1.4.0)
+    archive-tar-minitar (0.5.2)
     berkshelf (2.0.10)
       activesupport (~> 3.2.0)
       addressable (~> 2.3.4)
@@ -92,7 +102,12 @@ GEM
       multi_json (>= 1.3.0)
     coderay (1.1.0)
     diff-lcs (1.2.5)
+    docker-api (1.7.3)
+      archive-tar-minitar
+      excon (>= 0.28)
+      json
     erubis (2.7.0)
+    excon (0.30.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     fauxhai (2.0.0)
@@ -246,3 +261,4 @@ PLATFORMS
 DEPENDENCIES
   chefspec!
   cookbook-development!
+  kitchen-docker!
