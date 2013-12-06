@@ -64,11 +64,7 @@ action :install do
   should_destroy = is_running? && version_changing?
 
   java_service 'datomic' do
-    action [:stop]
-    only_if { should_destroy }
-  end
-
-  execute '/opt/chef/embedded/bin/bluepill unmonitor datomic' do
+    action [:stop, :disable]
     only_if { should_destroy }
   end
 

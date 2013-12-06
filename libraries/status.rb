@@ -14,7 +14,7 @@ module DatomicLibrary
       def running_version
         if(is_running?)
           output = datomic_status.stdout
-          match = output.match(/datomic-(pro|free)-transactor-(\d+\.\d+.\d+)/)
+          match = output.match(/datomic-(pro|free)-transactor-(\d+\.\d+\.\d+)/)
           if match
             match[2]
           end
@@ -22,13 +22,13 @@ module DatomicLibrary
       end
 
       def version_changing?
-        node[:datomic][:version] != running_version
+        version != running_version
       end
 
       private
 
       def datomic_status
-         Mixlib::ShellOut.new('ps auxw | grep -v grep | grep datomic | grep transactor').run_command
+        Mixlib::ShellOut.new('ps auxw | grep -v grep | grep datomic | grep transactor').run_command
       end
     end
   end

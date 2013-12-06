@@ -62,6 +62,7 @@ describe 'datomic::default' do
     let(:changing) { true }
 
     it { should stop_java_service 'datomic' }
+    it { should disable_java_service 'datomic' }
   end
 
   context 'when upgrading or installing' do

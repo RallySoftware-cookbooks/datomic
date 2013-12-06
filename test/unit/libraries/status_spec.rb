@@ -99,6 +99,9 @@ describe 'status' do
   describe '#version_changing?' do
     let(:old_version) { '0.1.2' }
     let(:new_version) { '1.2.3' }
+    let(:new_resource) do
+      DatomicResource.new(instance_name) { |resource| resource.version = new_version }
+    end
     let(:status_code) { 0 }
     let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{old_version}.jar:blah:blah:blah" }
     let(:node) do
@@ -146,6 +149,15 @@ class StatusLibraryWrapper
   def initialize(node, new_resource)
     @node = node
     @new_resource = new_resource
+  end
+end
+
+class DatomicResource < Chef::Resource
+
+  attr_accessor :version
+
+  def initialize(name)
+    super(name)
   end
 end
 
