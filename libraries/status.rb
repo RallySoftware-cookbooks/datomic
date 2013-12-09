@@ -1,3 +1,5 @@
+require_relative 'attributes'
+
 module DatomicLibrary
   module Mixin
     module Status
