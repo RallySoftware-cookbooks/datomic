@@ -19,9 +19,9 @@ GIT
 
 GIT
   remote: https://github.com/RallySoftware-cookbooks/cookbook-development
-  revision: dbe2f10006dc3de8e4910fddd9649f2b89407768
+  revision: a5e473cbdda5a63dc7f962c8f67cdf9d0480dc6f
   specs:
-    cookbook-development (0.0.5)
+    cookbook-development (0.0.15)
       berkshelf (~> 2.0)
       bundler (~> 1.3)
       chef (~> 11.6)
@@ -102,15 +102,15 @@ GEM
       multi_json (>= 1.3.0)
     coderay (1.1.0)
     diff-lcs (1.2.5)
-    docker-api (1.7.4)
+    docker-api (1.7.5)
       archive-tar-minitar
       excon (>= 0.28)
       json
     erubis (2.7.0)
-    excon (0.30.0)
+    excon (0.31.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
-    fauxhai (2.0.0)
+    fauxhai (2.0.1)
       net-ssh
       ohai
     ffi (1.9.3)
@@ -163,7 +163,7 @@ GEM
       net-ssh (>= 2.1.4)
       net-ssh-gateway (>= 0.99.0)
     nio4r (0.5.0)
-    nokogiri (1.5.10)
+    nokogiri (1.5.11)
     nori (1.1.5)
     ohai (6.20.0)
       ipaddress
