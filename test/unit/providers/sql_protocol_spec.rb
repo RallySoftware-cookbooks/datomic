@@ -9,6 +9,10 @@ describe 'datomic::default' do
   let(:sql_password) { 'youtellem' }
   let(:datomic_user) { 'theuser' }
   let(:license_key) { 'asdfaqwer12341234aasdfa12341341adfasdfaf' }
+  let(:write_concurrency) { 42 }
+  let(:read_concurrency) { 69 }
+  let(:memcached_hosts) { "rad-host:1234" }
+
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
       node.automatic_attrs[:hostname] = hostname
@@ -21,6 +25,9 @@ describe 'datomic::default' do
       node.set[:datomic][:protocol] = 'sql'
       node.set[:datomic][:free] = false
       node.set[:datomic][:user] = datomic_user
+      node.set[:datomic][:concurrency][:read] = read_concurrency
+      node.set[:datomic][:concurrency][:write] = write_concurrency
+      node.set[:datomic][:memcached_hosts] = memcached_hosts
     end.converge described_recipe
   end
 
@@ -40,7 +47,12 @@ describe 'datomic::default' do
            sql_user: sql_user,
            sql_password: sql_password,
            license_key: license_key,
-           protocol: 'sql'
-  }) }
+           protocol: 'sql',
+           write_concurrency: 42,
+           read_concurrency: 69,
+           memcached_hosts: "rad-host:1234"
+         }
+      )
+     }
 
 end

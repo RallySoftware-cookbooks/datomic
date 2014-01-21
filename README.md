@@ -27,6 +27,9 @@ See `attributes/default.rb` for default values
 * `node[:datomic][:sql_url]` = sql database connection string
 * `node[:datomic][:datomic_license_key]` = datomic license key
 * `node[:datomic][:java_opts]` = additional options to specify to java process
+* `node[:datomic][:concurrency][:write]` = Write concurrency.  Number of threads.  See datomic documentation.
+* `node[:datomic][:concurrency][:read]` = Read concurrency.  Number of threads.  Suggest 2x write-concurrency.  See datomic documentation.
+* `node[:datomic][:memcached_hosts]` = List of memcached hosts.  Format: host:port(,host:port)*
 
 ## Recipes
 ###default

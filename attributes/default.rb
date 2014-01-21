@@ -23,3 +23,8 @@ default[:datomic][:java][:'-XX'][:CMSParallelRemarkEnabled] = true
 default[:datomic][:java][:'-XX'][:CMSInitiatingOccupancyFraction] = '60'
 default[:datomic][:java][:'-XX'][:UseCMSInitiatingOccupancyOnly] = true
 default[:datomic][:java][:'-XX'][:CMSScavengeBeforeRemark] = true
+
+default[:datomic][:concurrency][:write] = 4
+default[:datomic][:concurrency][:read] = 8
+
+default[:datomic][:memcached_hosts] = nil

@@ -9,6 +9,9 @@ describe 'datomic::default' do
   let(:datomic_user) { 'theuser' }
   let(:license_key) { 'asdfaqwer12341234aasdfa12341341adfasdfaf' }
   let(:datomic_run_dir) { "/home/#{datomic_user}/datomic"}
+  let(:write_concurrency) { 42 }
+  let(:read_concurrency) { 69 }
+  let(:memcached_hosts) { "rad-host:1234" }
 
   let(:running) { false }
   let(:changing) { false }
@@ -22,6 +25,9 @@ describe 'datomic::default' do
       node.set[:datomic][:sql_url] = sql_url
       node.set[:datomic][:datomic_license_key] = license_key
       node.set[:datomic][:user] = datomic_user
+      node.set[:datomic][:concurrency][:write] = write_concurrency
+      node.set[:datomic][:concurrency][:read] = read_concurrency
+      node.set[:datomic][:memcached_hosts] = memcached_hosts
     end
   end
   subject(:chef_run) do
@@ -41,7 +47,10 @@ describe 'datomic::default' do
            sql_user: sql_user,
            sql_password: sql_password,
            license_key: license_key,
-           protocol: 'free'
+           protocol: 'free',
+           write_concurrency: 42,
+           read_concurrency: 69,
+           memcached_hosts: 'rad-host:1234'
   }) }
 
   let(:node) { chef_run.node }

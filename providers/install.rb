@@ -49,14 +49,17 @@ action :install do
     group username
     cookbook 'datomic'
     mode 00755
-    variables(
+    variables({
       :hostname => node[:hostname],
       :sql_user => node[:datomic][:sql_user],
       :sql_password => node[:datomic][:sql_password],
       :sql_url => node[:datomic][:sql_url],
       :license_key => node[:datomic][:datomic_license_key],
-      :protocol => protocol
-    )
+      :protocol => protocol,
+      :write_concurrency => node[:datomic][:concurrency][:write],
+      :read_concurrency => node[:datomic][:concurrency][:read],
+      :memcached_hosts => node[:datomic][:memcached_hosts]
+    })
   end
 
   run_dir = datomic_run_dir

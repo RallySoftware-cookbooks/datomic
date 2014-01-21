@@ -14,6 +14,9 @@ memory-index-threshold=32m
 memory-index-max=512m
 object-cache-max=1g
 
-write-concurrency=10
+write-concurrency=<%= @write_concurrency %>
+read-concurrency=<%= @read_concurrency %>
 
-read-concurrency=10
+<% if(@memcached_hosts) %>
+memcached=<%= @memcached_hosts %>
+<% end %>
