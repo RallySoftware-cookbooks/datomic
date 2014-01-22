@@ -16,6 +16,8 @@ describe 'datomic::default' do
   let(:running) { false }
   let(:changing) { false }
 
+  let(:rendered_file) { "/home/#{datomic_user}/datomic/transactor.properties" }
+
   let(:runner) do
     ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
       node.automatic_attrs[:hostname] = hostname
@@ -48,10 +50,19 @@ describe 'datomic::default' do
            sql_password: sql_password,
            license_key: license_key,
            protocol: 'free',
-           write_concurrency: 42,
-           read_concurrency: 69,
-           memcached_hosts: 'rad-host:1234'
+           write_concurrency: write_concurrency,
+           read_concurrency: read_concurrency,
+           memcached_hosts: memcached_hosts
   }) }
+
+  it { should render_file(rendered_file).with_content('write-concurrency=42') }
+  it { should render_file(rendered_file).with_content("memcached=#{memcached_hosts}") }
+
+  context 'when memcached is not set' do
+    let(:memcached_hosts) { nil }
+    it { should render_file(rendered_file).with_content('write-concurrency=42') }
+    it { should_not render_file(rendered_file).with_content('memcached') }
+  end
 
   let(:node) { chef_run.node }
   let(:local_file_path) { "#{Chef::Config[:file_cache_path]}/datomic-free-#{node[:datomic][:version]}.zip" }
