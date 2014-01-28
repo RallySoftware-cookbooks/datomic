@@ -38,6 +38,11 @@ See `attributes/default.rb` for default values
 * creates a symlink for datomic
 * create a runit service for datomic (datomic-service)
 
+###download
+* creates a datomic user
+* Downloads and extracts the datomic zip
+* creates a symlink for datomic
+
 ## License
 Copyright (C) 2013 Rally Software Development Corp
 

@@ -3,27 +3,36 @@ use_inline_resources
 include DatomicLibrary::Mixin::Attributes
 include DatomicLibrary::Mixin::Status
 
+  def download
+    remote_file local_file_path do
+      source datomic_download_url
+      owner username
+      group username
+      checksum node[:datomic][:checksum]
+    end
+
+    execute "unzip #{local_file_path} -d #{home_dir}" do
+      cwd download_dir
+      not_if { ::File.exists?(temporary_zip_dir) }
+    end
+
+    execute "chown -R #{username}:#{username} #{temporary_zip_dir}"
+
+    link datomic_run_dir do
+      to temporary_zip_dir
+      owner username
+      group username
+    end
+
+  end
+
+action :download do
+  download
+end
+
 action :install do
 
-  remote_file local_file_path do
-    source datomic_download_url
-    owner username
-    group username
-    checksum node[:datomic][:checksum]
-  end
-
-  execute "unzip #{local_file_path} -d #{home_dir}" do
-    cwd download_dir
-    not_if { ::File.exists?(temporary_zip_dir) }
-  end
-
-  execute "chown -R #{username}:#{username} #{temporary_zip_dir}"
-
-  link datomic_run_dir do
-    to temporary_zip_dir
-    owner username
-    group username
-  end
+  download
 
   protocol = node[:datomic][:protocol]
 
