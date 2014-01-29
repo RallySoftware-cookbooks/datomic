@@ -82,6 +82,7 @@ action :install do
     pill_file_dir run_dir
     log_file "#{run_dir}/datomic.log"
     only_if { version_changing? }
+    start_check Proc.new { Mixlib::ShellOut.new('netstat -tunl | grep -- 4334').run_command.stdout =~ /LISTEN/ }
   end
 
   java_service 'datomic' do
