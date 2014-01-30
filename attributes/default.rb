@@ -28,3 +28,6 @@ default[:datomic][:concurrency][:write] = 4
 default[:datomic][:concurrency][:read] = 8
 
 default[:datomic][:memcached_hosts] = nil
+
+default[:datomic][:start_retries] = 5
+default[:datomic][:start_delay] = 2
