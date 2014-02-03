@@ -30,6 +30,37 @@ action :download do
   download
 end
 
+action :console do
+  download
+
+  run_dir = datomic_run_dir
+
+  should_destroy = is_running? && version_changing?
+
+  aws_access_key_id = node[:datomic][:aws_access_key_id]
+  aws_secret_key    = node[:datomic][:aws_secret_key]
+  console_alias     = node[:datomic][:console_alias]
+  console_port      = node[:datomic][:console_port]
+  console_uri       = node[:datomic][:console_uri]
+
+  template "#{run_dir}/datomic_console.pill" do
+    source 'datomic_console.pill.erb'
+    aws_keys = "env AWS_ACCESS_KEY_ID='#{aws_access_key_id}' AWS_SECRET_KEY='#{aws_secret_key}'" unless aws_access_key_id.nil? || aws_secret_key.nil?
+    variables ({
+      :log_file_application => "/var/log/datomic_console.log",
+      :name                 => 'datomic_console',
+      :start_command        => "#{aws_keys} #{run_dir}/bin/console -p #{console_port} #{console_alias} #{console_uri}",
+      :working_dir          => run_dir,
+    })
+  end
+
+  bluepill_service 'datomic_console' do
+    action [:enable, :load, :start]
+    Chef::Resource::BluepillService.respond_to?(:conf_dir) ? conf_dir(run_dir) : node.set['bluepill']['conf_dir'] = run_dir
+  end
+
+end
+
 action :install do
 
   download

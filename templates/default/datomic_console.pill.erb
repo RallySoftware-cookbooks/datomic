@@ -1,0 +1,14 @@
+# -*- mode: ruby -*-
+Bluepill.application("<%= @name %>", :foreground => false, :log_file => "/var/log/bluepill_<%= @name %>.log") do |app|
+  app.process("<%= @name %>") do |process|
+    process.working_dir             = "<%= @working_dir %>"
+    process.start_command           = "<%= @start_command %>"
+    process.pid_file                = "/var/run/bluepill/<%= @name %>.pid"
+    process.stdout = process.stderr = "<%= @log_file_application %>"
+    process.daemonize               = true
+    process.start_grace_time        = 60.seconds
+    process.restart_grace_time      = 60.seconds
+    <%= node[:datomic][:console_user].nil? ? '' : "process.uid                     = \"#{node[:datomic][:console_user]}\"" %>
+    <%= node[:datomic][:console_user].nil? ? '' : "process.gid                     = \"#{node[:datomic][:console_user]}\"" %>
+  end
+end

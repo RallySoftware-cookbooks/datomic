@@ -28,3 +28,6 @@ default[:datomic][:concurrency][:write] = 4
 default[:datomic][:concurrency][:read] = 8
 
 default[:datomic][:memcached_hosts] = nil
+
+default[:datomic][:console_port] = 80
+default[:datomic][:console_user] = nil
