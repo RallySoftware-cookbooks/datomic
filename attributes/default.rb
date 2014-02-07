@@ -29,5 +29,8 @@ default[:datomic][:concurrency][:read] = 8
 
 default[:datomic][:memcached_hosts] = nil
 
+default[:datomic][:start_retries] = 5
+default[:datomic][:start_delay] = 2
+
 default[:datomic][:console_port] = 80
 default[:datomic][:console_user] = nil
