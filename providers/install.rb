@@ -29,6 +29,10 @@ include DatomicLibrary::Mixin::Status
     line "DATOMIC_HOME=#{datomic_run_dir}"
   end
 
+    link node[:datomic][:log_directory] do
+      to "#{datomic_run_dir}/log"
+    end
+
   end
 
 action :download do
