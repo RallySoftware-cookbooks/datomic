@@ -36,6 +36,7 @@ See `attributes/default.rb` for default values
 * `node[:datomic][:console_port]` = Console port integer per http://docs.datomic.com/console.html#sec-1 (default: 80)
 * `node[:datomic][:console_uri]` = Console URI string per http://docs.datomic.com/console.html#sec-1
 * `node[:datomic][:console_user]` = User name to run console under (default: root)
+* `node[:datomic][:environment_file]` = File to assign DATOMIC_HOME environment variable in (default: /etc/environment)
 
 ## Recipes
 ###console

@@ -24,6 +24,11 @@ include DatomicLibrary::Mixin::Status
       group username
     end
 
+  append_if_no_line "assign DATOMIC_HOME environment variable" do
+    path node[:datomic][:environment_file]
+    line "DATOMIC_HOME=#{datomic_run_dir}"
+  end
+
   end
 
 action :download do
