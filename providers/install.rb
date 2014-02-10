@@ -29,6 +29,14 @@ include DatomicLibrary::Mixin::Status
       line "DATOMIC_HOME=#{datomic_run_dir}"
     end
 
+    directory "#{datomic_run_dir}/log" do
+      recursive true
+    end
+
+    directory ::File.dirname(node[:datomic][:log_directory]) do
+      recursive true
+    end
+
     link node[:datomic][:log_directory] do
       to "#{datomic_run_dir}/log"
     end
@@ -56,7 +64,7 @@ action :console do
     source 'datomic_console.pill.erb'
     aws_keys = "env AWS_ACCESS_KEY_ID='#{aws_access_key_id}' AWS_SECRET_KEY='#{aws_secret_key}'" unless aws_access_key_id.nil? || aws_secret_key.nil?
     variables ({
-      :log_file_application => "/var/log/datomic_console.log",
+      :log_file_application => "#{node[:datomic][:log_directory]}/datomic_console.log",
       :name                 => 'datomic_console',
       :start_command        => "#{aws_keys} #{run_dir}/bin/console -p #{console_port} #{console_alias} #{console_uri}",
       :working_dir          => run_dir,
