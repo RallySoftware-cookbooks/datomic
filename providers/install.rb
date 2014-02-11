@@ -62,6 +62,7 @@ action :console do
 
   template "#{run_dir}/datomic_console.pill" do
     source 'datomic_console.pill.erb'
+    mode     "0640"
     aws_keys = "env AWS_ACCESS_KEY_ID='#{aws_access_key_id}' AWS_SECRET_KEY='#{aws_secret_key}'" unless aws_access_key_id.nil? || aws_secret_key.nil?
     variables ({
       :log_file_application => "#{node[:datomic][:log_directory]}/datomic_console.log",
