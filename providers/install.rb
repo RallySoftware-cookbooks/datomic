@@ -77,6 +77,10 @@ action :console do
     Chef::Resource::BluepillService.respond_to?(:conf_dir) ? conf_dir(run_dir) : node.set['bluepill']['conf_dir'] = run_dir
   end
 
+  # Operational aid for managing the Datomic Console
+  link "#{node[:datomic][:local_bin_directory]}/bluepill" do
+    to node[:bluepill][:bin]
+  end
 end
 
 action :install do

@@ -34,5 +34,6 @@ default[:datomic][:start_delay] = 2
 
 default[:datomic][:console_port] = 80
 default[:datomic][:console_user] = nil
+default[:datomic][:local_bin_directory] = "/usr/local/bin"
 default[:datomic][:environment_file] = "/etc/environment"
 default[:datomic][:log_directory] = "/var/log/datomic"
