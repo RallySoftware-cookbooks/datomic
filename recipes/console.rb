@@ -30,4 +30,4 @@ include_recipe 'bluepill'
 datomic_user node[:datomic][:user]
 datomic_install node[:datomic][:user] do
   action :console
-end
+end unless node[:datomic][:console_alias].nil? || node[:datomic][:console_alias] == ''
