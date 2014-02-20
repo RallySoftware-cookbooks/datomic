@@ -10,9 +10,9 @@ sql-password=<%= @sql_password %>
 sql-driver-class=oracle.jdbc.OracleDriver
 
 # Recommended settings for -Xmx4g, ongoing usage.
-memory-index-threshold=32m
-memory-index-max=512m
-object-cache-max=1g
+memory-index-threshold=<%= @memory_index_threshold %>
+memory-index-max=<%= @memory_index_max %>
+object-cache-max=<%= @object_cache_max %>
 
 write-concurrency=<%= @write_concurrency %>
 read-concurrency=<%= @read_concurrency %>
