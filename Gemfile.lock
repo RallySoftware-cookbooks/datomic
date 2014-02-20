@@ -25,9 +25,8 @@ GIT
       solve (>= 0.8.0)
       thor (~> 0.18.0)
 
-GIT
-  remote: https://github.com/RallySoftware-cookbooks/cookbook-development
-  revision: 6e84151d7ed71e3aaceaefbf85be431745fa3af4
+PATH
+  remote: ~/projects/cookbook-development
   specs:
     cookbook-development (0.0.15)
       berkshelf (= 3.0.0.beta6)
