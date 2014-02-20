@@ -30,13 +30,31 @@ See `attributes/default.rb` for default values
 * `node[:datomic][:concurrency][:write]` = Write concurrency.  Number of threads.  See datomic documentation.
 * `node[:datomic][:concurrency][:read]` = Read concurrency.  Number of threads.  Suggest 2x write-concurrency.  See datomic documentation.
 * `node[:datomic][:memcached_hosts]` = List of memcached hosts.  Format: host:port(,host:port)*
+* `node[:datomic][:aws_access_key_id]` = AWS_ACCESS_KEY_ID for use by console
+* `node[:datomic][:aws_secret_key]` = AWS_SECRET_KEY for use by console
+* `node[:datomic][:console_alias]` = Console alias string per http://docs.datomic.com/console.html#sec-1
+* `node[:datomic][:console_port]` = Console port integer per http://docs.datomic.com/console.html#sec-1 (default: 80)
+* `node[:datomic][:console_uri]` = Console URI string per http://docs.datomic.com/console.html#sec-1
+* `node[:datomic][:console_user]` = User name to run console under (default: root)
+* `node[:datomic][:environment_file]` = File to assign DATOMIC_HOME environment variable in (default: /etc/environment)
 
 ## Recipes
+###console
+* creates a datomic user
+* Downloads and extracts the datomic zip
+* creates a symlink for datomic
+* create a runit service for Datomic Console http://docs.datomic.com/console.html
+
 ###default
 * creates a datomic user
 * Downloads and extracts the datomic zip
 * creates a symlink for datomic
 * create a runit service for datomic (datomic-service)
+
+###download
+* creates a datomic user
+* Downloads and extracts the datomic zip
+* creates a symlink for datomic
 
 ## License
 Copyright (C) 2013 Rally Software Development Corp
