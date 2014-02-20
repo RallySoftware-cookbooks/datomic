@@ -5,6 +5,8 @@ default[:datomic][:checksum] = '88fda52a9a19'
 default[:datomic][:user] = 'datomic'
 default[:datomic][:protocol] = 'free'
 
+default[:datomic][:jmx_port] = 5111
+
 default[:datomic][:ojdbc_jar_url] = nil
 default[:datomic][:ojdbc_jar_checksum] = nil
 default[:datomic][:sql_user] = nil
@@ -23,6 +25,11 @@ default[:datomic][:java][:'-XX'][:CMSParallelRemarkEnabled] = true
 default[:datomic][:java][:'-XX'][:CMSInitiatingOccupancyFraction] = '60'
 default[:datomic][:java][:'-XX'][:UseCMSInitiatingOccupancyOnly] = true
 default[:datomic][:java][:'-XX'][:CMSScavengeBeforeRemark] = true
+
+default[:datomic][:java][:'-D'][:'com.sun.management.jmxremote']
+default[:datomic][:java][:'-D'][:'com.sun.management.jmxremote.port'] = node[:datomic][:jmx_port]
+default[:datomic][:java][:'-D'][:'com.sun.management.jmxremote.ssl'] = false
+default[:datomic][:java][:'-D'][:'com.sun.management.jmxremote.authenticate'] = false
 
 default[:datomic][:concurrency][:write] = 4
 default[:datomic][:concurrency][:read] = 8

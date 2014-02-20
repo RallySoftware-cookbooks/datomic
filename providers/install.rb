@@ -84,7 +84,7 @@ action :install do
     only_if { version_changing? }
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
-    start_check Proc.new { Mixlib::ShellOut.new('netstat -tunl | grep -- 4334').run_command.stdout =~ /LISTEN/ }
+    start_check Proc.new { Mixlib::ShellOut.new("netstat -tunl | grep -- #{node[:datomic][:jmx_port]}").run_command.stdout =~ /LISTEN/ }
   end
 
   java_service 'datomic' do
