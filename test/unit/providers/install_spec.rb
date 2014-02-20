@@ -13,6 +13,10 @@ describe 'datomic::default' do
   let(:read_concurrency) { 69 }
   let(:memcached_hosts) { "rad-host:1234" }
 
+  let(:memory_index_threshold) { '314m' }
+  let(:memory_index_max) { '99m' }
+  let(:object_cache_max) { '22g' }
+
   let(:running) { false }
   let(:changing) { false }
 
@@ -29,7 +33,10 @@ describe 'datomic::default' do
       node.set[:datomic][:user] = datomic_user
       node.set[:datomic][:concurrency][:write] = write_concurrency
       node.set[:datomic][:concurrency][:read] = read_concurrency
-      node.set[:datomic][:memcached_hosts] = memcached_hosts
+
+      node.set[:datomic][:memory_index_threshold] = memory_index_threshold
+      node.set[:datomic][:memory_index_max] = memory_index_max
+      node.set[:datomic][:object_cache_max] = object_cache_max
     end
   end
   subject(:chef_run) do

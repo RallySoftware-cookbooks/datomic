@@ -38,3 +38,7 @@ default[:datomic][:memcached_hosts] = nil
 
 default[:datomic][:start_retries] = 5
 default[:datomic][:start_delay] = 2
+
+default[:datomic][:memory_index_threshold] = '512m'
+default[:datomic][:memory_index_max] = '1g'
+default[:datomic][:object_cache_max] = '2g'
