@@ -59,7 +59,6 @@ action :install do
       :write_concurrency => node[:datomic][:concurrency][:write],
       :read_concurrency => node[:datomic][:concurrency][:read],
       :memcached_hosts => node[:datomic][:memcached_hosts],
-
       :memory_index_threshold => node[:datomic][:memory_index_threshold],
       :memory_index_max => node[:datomic][:memory_index_max],
       :object_cache_max => node[:datomic][:object_cache_max]

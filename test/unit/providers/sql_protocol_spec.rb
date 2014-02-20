@@ -12,6 +12,9 @@ describe 'datomic::default' do
   let(:write_concurrency) { 42 }
   let(:read_concurrency) { 69 }
   let(:memcached_hosts) { "rad-host:1234" }
+  let(:memory_index_threshold) { '314m' }
+  let(:memory_index_max) { '99m' }
+  let(:object_cache_max) { '22g' }
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
@@ -28,6 +31,9 @@ describe 'datomic::default' do
       node.set[:datomic][:concurrency][:read] = read_concurrency
       node.set[:datomic][:concurrency][:write] = write_concurrency
       node.set[:datomic][:memcached_hosts] = memcached_hosts
+      node.set[:datomic][:memory_index_threshold] = memory_index_threshold
+      node.set[:datomic][:memory_index_max] = memory_index_max
+      node.set[:datomic][:object_cache_max] = object_cache_max
     end.converge described_recipe
   end
 
@@ -50,7 +56,10 @@ describe 'datomic::default' do
            protocol: 'sql',
            write_concurrency: 42,
            read_concurrency: 69,
-           memcached_hosts: "rad-host:1234"
+           memcached_hosts: "rad-host:1234",
+           memory_index_threshold: memory_index_threshold,
+           memory_index_max: memory_index_max,
+           object_cache_max: object_cache_max
          }
       )
      }

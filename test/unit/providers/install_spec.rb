@@ -33,7 +33,7 @@ describe 'datomic::default' do
       node.set[:datomic][:user] = datomic_user
       node.set[:datomic][:concurrency][:write] = write_concurrency
       node.set[:datomic][:concurrency][:read] = read_concurrency
-
+      node.set[:datomic][:memcached_hosts] = memcached_hosts
       node.set[:datomic][:memory_index_threshold] = memory_index_threshold
       node.set[:datomic][:memory_index_max] = memory_index_max
       node.set[:datomic][:object_cache_max] = object_cache_max
@@ -59,7 +59,10 @@ describe 'datomic::default' do
            protocol: 'free',
            write_concurrency: write_concurrency,
            read_concurrency: read_concurrency,
-           memcached_hosts: memcached_hosts
+           memcached_hosts: memcached_hosts,
+           memory_index_threshold: memory_index_threshold,
+           memory_index_max: memory_index_max,
+           object_cache_max: object_cache_max
   }) }
 
   it { should render_file(rendered_file).with_content('write-concurrency=42') }
