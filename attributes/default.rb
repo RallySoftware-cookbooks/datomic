@@ -9,11 +9,14 @@ default[:datomic][:jmx_port] = 5111
 
 default[:datomic][:ojdbc_jar_url] = nil
 default[:datomic][:ojdbc_jar_checksum] = nil
+default[:datomic][:extra_jars] = nil
 default[:datomic][:sql_user] = nil
 default[:datomic][:sql_password] = nil
 default[:datomic][:sql_url] = nil
 
 default[:datomic][:datomic_license_key] = nil
+
+default[:datomic][:metrics_callback] = nil
 
 default[:datomic][:java][:'-X'][:ms] = '4g'
 default[:datomic][:java][:'-X'][:mx] = '4g'

@@ -27,6 +27,17 @@ action :install do
 
   protocol = node[:datomic][:protocol]
 
+  if node[:datomic][:extra_jars]
+    for jar in node[:datomic][:extra_jars]
+      jar_name = (jar.split /\//) [-1]
+      remote_file "#{datomic_run_dir}/lib/#{jar_name}" do
+        source jar
+        owner username
+        group username
+      end
+    end
+  end
+
   if(protocol == 'sql')
     ojdbc_jar_url = node[:datomic][:ojdbc_jar_url]
 
@@ -61,7 +72,8 @@ action :install do
       :memcached_hosts => node[:datomic][:memcached_hosts],
       :memory_index_threshold => node[:datomic][:memory_index_threshold],
       :memory_index_max => node[:datomic][:memory_index_max],
-      :object_cache_max => node[:datomic][:object_cache_max]
+      :object_cache_max => node[:datomic][:object_cache_max],
+      :metrics_callback => node[:datomic][:metrics_callback]
     })
   end
 
@@ -88,7 +100,7 @@ action :install do
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
     start_check Proc.new { Mixlib::ShellOut.new("netstat -tunl | grep -- #{node[:datomic][:jmx_port]}").run_command.stdout =~ /LISTEN/ }
-  end
+ end
 
   java_service 'datomic' do
     action :restart

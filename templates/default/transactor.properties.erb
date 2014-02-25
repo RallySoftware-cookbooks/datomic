@@ -20,3 +20,8 @@ read-concurrency=<%= @read_concurrency %>
 <% if(@memcached_hosts) %>
 memcached=<%= @memcached_hosts %>
 <% end %>
+
+<% if(@metrics_callback) %>
+metrics-callback=<%=@metrics_callback%>
+<% end %>
+

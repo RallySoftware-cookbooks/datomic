@@ -59,6 +59,7 @@ describe 'datomic::default' do
            memcached_hosts: "rad-host:1234",
            memory_index_threshold: memory_index_threshold,
            memory_index_max: memory_index_max,
+           metrics_callback: nil,
            object_cache_max: object_cache_max
          }
       )
