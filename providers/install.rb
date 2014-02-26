@@ -27,7 +27,7 @@ action :install do
 
   protocol = node[:datomic][:protocol]
 
-  if node[:datomic][:extra_jars]
+  if node[:datomic][:extra_jars] # ~FC023
     for jar in node[:datomic][:extra_jars]
       jar_name = (jar.split /\//) [-1]
       remote_file "#{datomic_run_dir}/lib/#{jar_name}" do
