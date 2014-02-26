@@ -22,6 +22,9 @@ describe 'datomic::default' do
 
   let(:rendered_file) { "/home/#{datomic_user}/datomic/transactor.properties" }
 
+  let(:metrics_callback) { 'my-ns/my-callback' }
+  let(:extra_jars) { ['http://google.com/extra.jar'] }
+
   let(:runner) do
     ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
       node.automatic_attrs[:hostname] = hostname
@@ -37,6 +40,8 @@ describe 'datomic::default' do
       node.set[:datomic][:memory_index_threshold] = memory_index_threshold
       node.set[:datomic][:memory_index_max] = memory_index_max
       node.set[:datomic][:object_cache_max] = object_cache_max
+      node.set[:datomic][:metrics_callback] = metrics_callback
+      node.set[:datomic][:extra_jars] = extra_jars
     end
   end
   subject(:chef_run) do
@@ -62,11 +67,13 @@ describe 'datomic::default' do
            memcached_hosts: memcached_hosts,
            memory_index_threshold: memory_index_threshold,
            memory_index_max: memory_index_max,
+           metrics_callback: metrics_callback,
            object_cache_max: object_cache_max
   }) }
 
   it { should render_file(rendered_file).with_content('write-concurrency=42') }
   it { should render_file(rendered_file).with_content("memcached=#{memcached_hosts}") }
+  it { should render_file(rendered_file).with_content('metrics-callback=my-ns/my-callback') }
 
   context 'when memcached is not set' do
     let(:memcached_hosts) { nil }
@@ -82,6 +89,10 @@ describe 'datomic::default' do
          checksum: node[:datomic][:checksum]
   )}
 
+  let(:extra_jars_path) { "/home/#{datomic_user}/datomic/lib/extra.jar" }
+  it { should create_remote_file(extra_jars_path).with(
+         owner: datomic_user
+  )}
 
   it { should run_execute("unzip #{local_file_path} -d /home/theuser").with(
        :cwd => Chef::Config[:file_cache_path])
