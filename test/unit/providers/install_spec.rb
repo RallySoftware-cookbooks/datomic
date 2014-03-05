@@ -26,7 +26,7 @@ describe 'datomic::default' do
   let(:extra_jars) { ['http://google.com/extra.jar'] }
 
   let(:runner) do
-    ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
+    ChefSpec::Runner.new(step_into: ['datomic_install', 'datomic_jars'], log_level: :error) do |node|
       node.automatic_attrs[:hostname] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:sql_user] = sql_user
