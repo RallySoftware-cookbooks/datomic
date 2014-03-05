@@ -9,9 +9,9 @@ GIT
 
 GIT
   remote: git://github.com/berkshelf/berkshelf.git
-  revision: 7f4734b1526eecfefd2982fef48468c1ea2c2a9f
+  revision: 61111422de0247ad2ed234c76e1951586868f5cf
   specs:
-    berkshelf (3.0.0.beta6)
+    berkshelf (3.0.0.beta7)
       addressable (~> 2.3.4)
       berkshelf-api-client (~> 1.1)
       buff-config (~> 0.2)
@@ -27,10 +27,10 @@ GIT
 
 GIT
   remote: https://github.com/RallySoftware-cookbooks/cookbook-development
-  revision: 1fd106d6762dfde0e2f641b42c16d80b46560c85
+  revision: 16cd4208f90cc606bc404c0d6184b366890b766b
   specs:
     cookbook-development (0.0.15)
-      berkshelf (= 3.0.0.beta6)
+      berkshelf (= 3.0.0.beta7)
       bundler (~> 1.3)
       chef (~> 11.6)
       chefspec (~> 3.0)
@@ -61,7 +61,7 @@ GEM
     celluloid-io (0.15.0)
       celluloid (>= 0.15.0)
       nio4r (>= 0.5.0)
-    chef (11.10.2)
+    chef (11.10.4)
       chef-zero (~> 1.7, >= 1.7.2)
       diff-lcs (~> 1.2, >= 1.2.4)
       erubis (~> 2.7)
@@ -93,12 +93,12 @@ GEM
       rspec (~> 2.14)
     coderay (1.1.0)
     diff-lcs (1.2.5)
-    docker-api (1.8.2)
+    docker-api (1.8.4)
       archive-tar-minitar
       excon (>= 0.28)
       json
     erubis (2.7.0)
-    excon (0.31.0)
+    excon (0.32.0)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
     fauxhai (2.1.0)
@@ -114,7 +114,7 @@ GEM
     gherkin (2.11.8)
       multi_json (~> 1.3)
     hashie (2.0.5)
-    highline (1.6.20)
+    highline (1.6.21)
     i18n (0.6.9)
     ipaddress (0.8.0)
     json (1.8.1)
@@ -130,7 +130,7 @@ GEM
     mixlib-log (1.6.0)
     mixlib-shellout (1.3.0)
     moneta (0.6.0)
-    multi_json (1.8.4)
+    multi_json (1.9.0)
     multipart-post (1.2.0)
     net-http-persistent (2.9.4)
     net-scp (1.1.2)
@@ -143,7 +143,7 @@ GEM
       net-ssh-gateway (>= 1.2.0)
     nio4r (1.0.0)
     nokogiri (1.5.11)
-    octokit (2.7.1)
+    octokit (2.7.2)
       sawyer (~> 0.5.2)
     ohai (6.20.0)
       ipaddress
@@ -186,7 +186,7 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    rspec-core (2.14.7)
+    rspec-core (2.14.8)
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.6)
