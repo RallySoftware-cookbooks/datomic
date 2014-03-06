@@ -4,10 +4,17 @@ port=4334
 
 license-key=<%= @license_key %>
 
+<% if(@protocol == 'sql') %>
 sql-url=<%= @sql_url %>
 sql-user=<%= @sql_user %>
 sql-password=<%= @sql_password %>
 sql-driver-class=oracle.jdbc.OracleDriver
+<% end %>
+
+<% if(@protocol == 'riak') %>
+riak-host=<%= @riak_host %>
+riak-bucket=<%= @riak_bucket %>
+<% end %>
 
 # Recommended settings for -Xmx4g, ongoing usage.
 memory-index-threshold=<%= @memory_index_threshold %>

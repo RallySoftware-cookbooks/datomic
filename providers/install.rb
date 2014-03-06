@@ -50,6 +50,14 @@ action :install do
     end
   end
 
+  if(protocol == 'riak')
+    riak_host = node[:datomic][:riak_host]
+    riak_bucket = node[:datomic][:riak_bucket]
+
+    raise 'You must set node[:datomic][:riak_host]' if riak_host.nil?
+    raise 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
+  end
+
   template "#{datomic_run_dir}/transactor.properties" do
     source 'transactor.properties.erb'
     owner username
@@ -69,7 +77,9 @@ action :install do
       :memory_index_threshold => node[:datomic][:memory_index_threshold],
       :memory_index_max => node[:datomic][:memory_index_max],
       :object_cache_max => node[:datomic][:object_cache_max],
-      :metrics_callback => node[:datomic][:metrics_callback]
+      :metrics_callback => node[:datomic][:metrics_callback],
+      :riak_host => node[:datomic][:riak_host],
+      :riak_bucket => node[:datomic][:riak_bucket]
     })
   end
 

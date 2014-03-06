@@ -67,8 +67,10 @@ describe 'datomic::default' do
            memcached_hosts: memcached_hosts,
            memory_index_threshold: memory_index_threshold,
            memory_index_max: memory_index_max,
+           object_cache_max: object_cache_max,
            metrics_callback: metrics_callback,
-           object_cache_max: object_cache_max
+           riak_host: nil,
+           riak_bucket: nil
   }) }
 
   it { should render_file(rendered_file).with_content('write-concurrency=42') }
