@@ -1,9 +1,9 @@
 require_relative '../spec_helper'
 
-describe 'datomic::default' do
+describe 'datomic_test::install' do
   let(:memory) { '84g' }
   let(:hostname) { 'myhostname' }
-  let(:datomic_user) { 'theuser' }
+  let(:datomic_user) { 'datomic' }
   let(:license_key) { 'asdfaqwer12341234aasdfa12341341adfasdfaf' }
   let(:write_concurrency) { 42 }
   let(:read_concurrency) { 69 }
@@ -15,7 +15,7 @@ describe 'datomic::default' do
   let(:riak_bucket) { 'buckethead' }
 
   subject(:chef_run) do
-    ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
+    ChefSpec::Runner.new(step_into: ['datomic'], log_level: :error) do |node|
       node.automatic_attrs[:hostname] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:datomic_license_key] = license_key
@@ -32,9 +32,6 @@ describe 'datomic::default' do
       node.set[:datomic][:riak_bucket] = riak_bucket
     end.converge described_recipe
   end
-
-  let(:node) { chef_run.node }
-
 
   it { should create_template("/home/#{datomic_user}/datomic/transactor.properties").with(
          owner: datomic_user,

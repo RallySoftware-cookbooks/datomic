@@ -4,5 +4,5 @@ source 'http://api.berkshelf.com'
 metadata
 
 group :test do
-  cookbook 'integration', :path => './test/cookbooks/integration'
+  cookbook 'datomic_test', :path => './test/cookbooks/datomic_test'
 end

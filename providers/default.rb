@@ -4,7 +4,6 @@ include DatomicLibrary::Mixin::Attributes
 include DatomicLibrary::Mixin::Status
 
 action :install do
-
   remote_file local_file_path do
     source datomic_download_url
     owner username
@@ -50,10 +49,10 @@ action :install do
     end
   end
 
-  if(protocol == 'riak')
-    riak_host = node[:datomic][:riak_host]
-    riak_bucket = node[:datomic][:riak_bucket]
+  riak_host = node[:datomic][:riak_host]
+  riak_bucket = node[:datomic][:riak_bucket]
 
+  if(protocol == 'riak')
     raise 'You must set node[:datomic][:riak_host]' if riak_host.nil?
     raise 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
   end
@@ -78,20 +77,15 @@ action :install do
       :memory_index_max => node[:datomic][:memory_index_max],
       :object_cache_max => node[:datomic][:object_cache_max],
       :metrics_callback => node[:datomic][:metrics_callback],
-      :riak_host => node[:datomic][:riak_host],
-      :riak_bucket => node[:datomic][:riak_bucket]
+      :riak_host => riak_host,
+      :riak_bucket => riak_bucket
     })
   end
+end
 
-  run_dir = datomic_run_dir
 
-  should_destroy = is_running? && version_changing?
-
-  java_service 'datomic' do
-    action [:stop, :disable]
-    only_if { should_destroy }
-  end
-
+action :start do
+  run_dir = datomic_run_dir # assign so that it can be passed into the proc
   java_service 'datomic' do
     action [:create, :enable, :load, :start]
     user username
@@ -102,15 +96,24 @@ action :install do
     args(['--main', 'datomic.launcher', 'transactor.properties'])
     pill_file_dir run_dir
     log_file "#{run_dir}/datomic.log"
-    only_if { version_changing? }
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
-    start_check Proc.new { Mixlib::ShellOut.new("netstat -tunl | grep -- #{node[:datomic][:jmx_port]}").run_command.stdout =~ /LISTEN/ }
- end
+    start_check { is_running? }
+    not_if { is_running? }
+  end
+end
 
+action :stop do
+  java_service 'datomic' do
+    action :stop
+    stop_retries node[:datomic][:stop_retries]
+    stop_delay node[:datomic][:stop_delay]
+    only_if { is_running? }
+  end
+end
+
+action :restart do
   java_service 'datomic' do
     action :restart
-    only_if { is_running? && !version_changing? }
   end
-
 end

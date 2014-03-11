@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'datomic::default' do
+describe 'datomic_test::install' do
   let(:ojdbc_jar_url) { 'http://www.oracle.com/ojdbc_11.0.2.jar' }
   let(:memory) { '84g' }
   let(:hostname) { 'myhostname' }
@@ -17,7 +17,7 @@ describe 'datomic::default' do
   let(:object_cache_max) { '22g' }
 
   subject(:chef_run) do
-    ChefSpec::Runner.new(step_into: ['datomic_install'], log_level: :error) do |node|
+    ChefSpec::Runner.new(step_into: ['datomic'], log_level: :error) do |node|
       node.automatic_attrs[:hostname] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:ojdbc_jar_url] = ojdbc_jar_url
@@ -36,8 +36,6 @@ describe 'datomic::default' do
       node.set[:datomic][:object_cache_max] = object_cache_max
     end.converge described_recipe
   end
-
-  let(:node) { chef_run.node }
 
   let(:ojdbc_jar_path) { "/home/#{datomic_user}/datomic/lib/ojdbc.jar" }
 

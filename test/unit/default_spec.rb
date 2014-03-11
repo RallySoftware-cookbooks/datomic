@@ -12,6 +12,9 @@ describe 'datomic::default' do
   it { should include_recipe 'java_service' }
 
   it { should create_datomic_user datomic_user }
-  it { should perform_datomic_install datomic_user }
+
+  it { should stop_datomic_instance datomic_user }
+  it { should install_datomic_instance datomic_user }
+  it { should start_datomic_instance datomic_user }
 
 end

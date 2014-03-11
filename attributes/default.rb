@@ -39,8 +39,10 @@ default[:datomic][:concurrency][:read] = 8
 
 default[:datomic][:memcached_hosts] = nil
 
-default[:datomic][:start_retries] = 5
-default[:datomic][:start_delay] = 2
+default[:datomic][:start_retries] = 10
+default[:datomic][:start_delay] = 5
+default[:datomic][:stop_retries] = 10
+default[:datomic][:stop_delay] = 5
 
 default[:datomic][:memory_index_threshold] = '512m'
 default[:datomic][:memory_index_max] = '1g'

@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
-describe 'datomic::default' do
-  let(:datomic_user) { 'theuser' }
+describe 'datomic_test::user' do
+  let(:datomic_user) { 'datomic' }
   let(:user_home_dir) { "/home/#{datomic_user}" }
 
   subject(:chef_run) do

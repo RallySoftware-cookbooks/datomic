@@ -3,7 +3,15 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:datomic_user, :create, resource_name)
   end
 
-  def perform_datomic_install(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:datomic_install, :install, resource_name)
+  def install_datomic_instance(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:datomic, :install, resource_name)
+  end
+
+  def stop_datomic_instance(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:datomic, :stop, resource_name)
+  end
+
+  def start_datomic_instance(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:datomic, :start, resource_name)
   end
 end

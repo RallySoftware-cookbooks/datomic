@@ -1,4 +1,4 @@
-name             'integration'
+name             'datomic_test'
 maintainer       'Rally Software Development Corp'
 maintainer_email 'rallysoftware-cookbooks@rallydev.com'
 license          'MIT'
