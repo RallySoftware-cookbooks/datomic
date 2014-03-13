@@ -80,6 +80,7 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
+    notifies :restart, "datomic[#{new_resource.name}]", :immediately
   end
 end
 

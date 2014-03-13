@@ -93,4 +93,6 @@ describe 'datomic_test::install' do
   it { should run_execute("unzip #{local_file_path} -d /home/datomic").with(
          :cwd => Chef::Config[:file_cache_path]
   )}
+
+  specify { chef_run.template(rendered_file).should notify('datomic[datomic]').to(:restart).immediately }
 end
