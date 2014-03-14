@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe 'datomic_test::install' do
   let(:memory) { '84g' }
-  let(:hostname) { 'myhostname' }
+  let(:hostname) { 'myhostname.local' }
   let(:sql_url) { 'http://www.mylittleponies.com/rainbowdash' }
   let(:sql_user) { 'Steve Dave' }
   let(:sql_password) { 'youtellem' }
@@ -27,7 +27,7 @@ describe 'datomic_test::install' do
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic', 'datomic_jars'], log_level: :error) do |node|
-      node.automatic_attrs[:hostname] = hostname
+      node.automatic_attrs[:fqdn] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:sql_user] = sql_user
       node.set[:datomic][:sql_password] = sql_password
@@ -93,6 +93,4 @@ describe 'datomic_test::install' do
   it { should run_execute("unzip #{local_file_path} -d /home/datomic").with(
          :cwd => Chef::Config[:file_cache_path]
   )}
-
-  specify { chef_run.template(rendered_file).should notify('datomic[datomic]').to(:restart).immediately }
 end

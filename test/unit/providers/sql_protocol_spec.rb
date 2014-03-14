@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe 'datomic_test::install' do
   let(:ojdbc_jar_url) { 'http://www.oracle.com/ojdbc_11.0.2.jar' }
   let(:memory) { '84g' }
-  let(:hostname) { 'myhostname' }
+  let(:hostname) { 'myhostname.local' }
   let(:sql_url) { 'http://www.mylittleponies.com/rainbowdash' }
   let(:sql_user) { 'Steve Dave' }
   let(:sql_password) { 'youtellem' }
@@ -18,7 +18,7 @@ describe 'datomic_test::install' do
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic'], log_level: :error) do |node|
-      node.automatic_attrs[:hostname] = hostname
+      node.automatic_attrs[:fqdn] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:ojdbc_jar_url] = ojdbc_jar_url
       node.set[:datomic][:sql_user] = sql_user

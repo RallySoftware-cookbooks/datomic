@@ -64,7 +64,7 @@ action :install do
     cookbook 'datomic'
     mode 00755
     variables({
-      :hostname => node[:hostname],
+      :hostname => node[:fqdn],
       :sql_user => node[:datomic][:sql_user],
       :sql_password => node[:datomic][:sql_password],
       :sql_url => node[:datomic][:sql_url],
@@ -80,7 +80,6 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
-    notifies :restart, "datomic[#{new_resource.name}]", :immediately
   end
 end
 

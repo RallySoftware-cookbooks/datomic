@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe 'datomic_test::install' do
   let(:memory) { '84g' }
-  let(:hostname) { 'myhostname' }
+  let(:hostname) { 'myhostname.local' }
   let(:datomic_user) { 'datomic' }
   let(:license_key) { 'asdfaqwer12341234aasdfa12341341adfasdfaf' }
   let(:write_concurrency) { 42 }
@@ -16,7 +16,7 @@ describe 'datomic_test::install' do
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic'], log_level: :error) do |node|
-      node.automatic_attrs[:hostname] = hostname
+      node.automatic_attrs[:fqdn] = hostname
       node.set[:datomic][:memory] = memory
       node.set[:datomic][:datomic_license_key] = license_key
       node.set[:datomic][:protocol] = 'riak'
