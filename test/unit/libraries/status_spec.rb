@@ -1,7 +1,8 @@
 describe 'status' do
 
   let(:instance_name) { 'test_instance' }
-  let(:new_resource) { Chef::Resource.new(instance_name) }
+  let(:datomic_user_name) { 'datomic' }
+  let(:new_resource) { DatomicResource.new(instance_name, datomic_user_name) }
 
   let(:node) do
     node = Chef::Node.new
@@ -100,7 +101,7 @@ describe 'status' do
     let(:old_version) { '0.1.2' }
     let(:new_version) { '1.2.3' }
     let(:new_resource) do
-      DatomicResource.new(instance_name) { |resource| resource.version = new_version }
+      DatomicResource.new(instance_name, 'datomic') { |resource| resource.version = new_version }
     end
     let(:status_code) { 0 }
     let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{old_version}.jar:blah:blah:blah" }
@@ -136,9 +137,7 @@ describe 'status' do
       let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{new_version}.jar:blah:blah:blah" }
       its(:version_changing?) { should be_false }
     end
-
   end
-
 end
 
 class StatusLibraryWrapper
@@ -155,9 +154,11 @@ end
 class DatomicResource < Chef::Resource
 
   attr_accessor :version
+  attr_accessor :datomic_user_name
 
-  def initialize(name)
+  def initialize(name, datomic_user_name)
     super(name)
+    @datomic_user_name = datomic_user_name
   end
 end
 

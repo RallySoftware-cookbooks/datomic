@@ -3,6 +3,8 @@ use_inline_resources
 include DatomicLibrary::Mixin::Attributes
 include DatomicLibrary::Mixin::Status
 
+require 'etc'
+
 action :install do
   remote_file local_file_path do
     source datomic_download_url
@@ -16,30 +18,25 @@ action :install do
     not_if { ::File.exists?(temporary_zip_dir) }
   end
 
-  execute "chown -R #{username}:#{username} #{temporary_zip_dir}"
+  execute "chown -R #{username}:#{username} #{temporary_zip_dir}" do
+    not_if { Etc.getpwuid(::File.stat(temporary_zip_dir).uid).name == username }
+  end
 
-  link datomic_run_dir do
-    to temporary_zip_dir
+  datomic_jars 'Install extra jars' do
+    jars node[:datomic][:extra_jars]
+    lib_dir "#{temporary_zip_dir}/lib"
     owner username
     group username
   end
 
   protocol = node[:datomic][:protocol]
-
-  datomic_jars 'Install extra jars' do
-    jars node[:datomic][:extra_jars]
-    lib_dir "#{datomic_run_dir}/lib"
-    owner username
-    group username
-  end
-
   if(protocol == 'sql')
     ojdbc_jar_url = node[:datomic][:ojdbc_jar_url]
 
-    raise 'You must set node[:datomic][:ojdbc_jar_url]' if ojdbc_jar_url.nil?
-    raise 'The sql protocol requires a datomic license, specify with node[:datomic][:datomic_license_key]' if node[:datomic][:datomic_license_key].nil?
+    Chef::Application.fatal! 'You must set node[:datomic][:ojdbc_jar_url]' if ojdbc_jar_url.nil?
+    Chef::Application.fatal! 'The sql protocol requires a datomic license, specify with node[:datomic][:datomic_license_key]' if node[:datomic][:datomic_license_key].nil?
 
-    ojdbc_file = "#{datomic_run_dir}/lib/ojdbc.jar"
+    ojdbc_file = "#{temporary_zip_dir}/lib/ojdbc.jar"
 
     remote_file ojdbc_file do
       source ojdbc_jar_url
@@ -53,11 +50,11 @@ action :install do
   riak_bucket = node[:datomic][:riak_bucket]
 
   if(protocol == 'riak')
-    raise 'You must set node[:datomic][:riak_host]' if riak_host.nil?
-    raise 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
+    Chef::Application.fatal! 'You must set node[:datomic][:riak_host]' if riak_host.nil?
+    Chef::Application.fatal! 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
   end
 
-  template "#{datomic_run_dir}/transactor.properties" do
+  template "#{temporary_zip_dir}/transactor.properties" do
     source 'transactor.properties.erb'
     owner username
     group username
@@ -80,14 +77,13 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
+    notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
   end
-end
 
-
-action :start do
-  run_dir = datomic_run_dir # assign so that it can be passed into the proc
-  java_service 'datomic' do
-    action [:create, :enable, :load, :start]
+  run_dir = temporary_zip_dir # assign so that it can be passed into the proc
+  java_service 'configure datomic' do
+    service_name 'datomic'
+    action [:create, :enable, :load]
     user username
     working_dir run_dir
     standard_options({:server => nil})
@@ -99,21 +95,38 @@ action :start do
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
     start_check { is_running? }
+    notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
+  end
+
+  datomic 'stop datomic in preparation for start or restart' do
+    action :nothing
+  end
+
+  datomic 'start datomic from install action' do
+    action :start
+  end
+
+  link datomic_run_dir do
+    to temporary_zip_dir
+    owner username
+    group username
+  end
+end
+
+action :start do
+  java_service 'start datomic' do
+    service_name 'datomic'
+    action [:start]
     not_if { is_running? }
   end
 end
 
 action :stop do
-  java_service 'datomic' do
-    action :stop
+  java_service 'stop datomic' do
+    service_name 'datomic'
     stop_retries node[:datomic][:stop_retries]
     stop_delay node[:datomic][:stop_delay]
     only_if { is_running? }
-  end
-end
-
-action :restart do
-  java_service 'datomic' do
-    action :restart
+    action :stop
   end
 end

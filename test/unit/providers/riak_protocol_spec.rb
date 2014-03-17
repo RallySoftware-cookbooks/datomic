@@ -13,6 +13,13 @@ describe 'datomic_test::install' do
   let(:object_cache_max) { '22g' }
   let(:riak_host) { 'bld-riak-01' }
   let(:riak_bucket) { 'buckethead' }
+  let(:datomic_run_dir) { "/home/#{datomic_user}/datomic"}
+  let(:temporary_zip_dir) { "#{datomic_run_dir}-pro-0.8.4215" }
+
+  before {
+    ::File.stub_chain(:stat, :uid).and_return(100)
+    Etc.stub_chain(:getpwuid, :name).and_return(datomic_user)
+  }
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic'], log_level: :error) do |node|
@@ -33,7 +40,7 @@ describe 'datomic_test::install' do
     end.converge described_recipe
   end
 
-  it { should create_template("/home/#{datomic_user}/datomic/transactor.properties").with(
+  it { should create_template("#{temporary_zip_dir}/transactor.properties").with(
          owner: datomic_user,
          group: datomic_user,
          mode: 00755,

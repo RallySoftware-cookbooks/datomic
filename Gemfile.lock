@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/berkshelf/berkshelf.git
-  revision: 28a3bc9bcfb557ffa00cd033e9f2ccb18a31c3f4
+  revision: 8bc652ef134f1e2f59ee46d0452b6cdc49b2e97e
   specs:
     berkshelf (3.0.0.beta7)
       addressable (~> 2.3.4)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/RallySoftware-cookbooks/cookbook-development
-  revision: 7906697cf17bd7491d71667a9bca3c20de6e4e94
+  revision: 9104e92350cf937911b4b16b005fc6a07f901940
   specs:
     cookbook-development (0.0.15)
       berkshelf (= 3.0.0.beta7)
@@ -36,6 +36,7 @@ GIT
       chefspec (~> 3.2.0)
       faraday (= 0.8.9)
       foodcritic (~> 3.0)
+      kitchen-docker-api (~> 0.1)
       kitchen-vagrant (~> 0.11)
       rake (~> 10.0)
       test-kitchen
@@ -99,7 +100,7 @@ GEM
       excon (>= 0.28)
       json
     erubis (2.7.0)
-    excon (0.32.0)
+    excon (0.32.1)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
     fauxhai (2.1.0)
@@ -119,6 +120,9 @@ GEM
     i18n (0.6.9)
     ipaddress (0.8.0)
     json (1.8.1)
+    kitchen-docker-api (0.1.0)
+      docker-api (~> 1.9.0)
+      test-kitchen (>= 1.0.0)
     kitchen-vagrant (0.14.0)
       test-kitchen (~> 1.0)
     method_source (0.8.2)
@@ -195,7 +199,7 @@ GEM
     sawyer (0.5.3)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
-    slop (3.4.7)
+    slop (3.5.0)
     solve (0.8.2)
     systemu (2.5.2)
     test-kitchen (1.2.1)

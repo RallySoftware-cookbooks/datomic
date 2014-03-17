@@ -1,6 +1,8 @@
 require_relative '../spec_helper'
+require 'etc'
 
 describe 'datomic_test::install' do
+
   let(:memory) { '84g' }
   let(:hostname) { 'myhostname.local' }
   let(:sql_url) { 'http://www.mylittleponies.com/rainbowdash' }
@@ -12,6 +14,7 @@ describe 'datomic_test::install' do
   let(:write_concurrency) { 42 }
   let(:read_concurrency) { 69 }
   let(:memcached_hosts) { "rSad-host:1234" }
+  let(:temporary_zip_dir) { "#{datomic_run_dir}-free-0.8.4215" }
 
   let(:memory_index_threshold) { '314m' }
   let(:memory_index_max) { '99m' }
@@ -20,10 +23,15 @@ describe 'datomic_test::install' do
   let(:running) { false }
   let(:changing) { false }
 
-  let(:rendered_file) { "/home/#{datomic_user}/datomic/transactor.properties" }
+  let(:rendered_file) { "#{temporary_zip_dir}/transactor.properties" }
 
   let(:metrics_callback) { 'my-ns/my-callback' }
   let(:extra_jars) { ['http://google.com/extra.jar'] }
+
+  before {
+    ::File.stub_chain(:stat, :uid).and_return(100)
+    Etc.stub_chain(:getpwuid, :name).and_return('someuser')
+  }
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic', 'datomic_jars'], log_level: :error) do |node|
@@ -85,7 +93,7 @@ describe 'datomic_test::install' do
          checksum: node[:datomic][:checksum]
   )}
 
-  let(:extra_jars_path) { "/home/#{datomic_user}/datomic/lib/extra.jar" }
+  let(:extra_jars_path) { "#{temporary_zip_dir}/lib/extra.jar" }
   it { should create_remote_file(extra_jars_path).with(
          owner: datomic_user
   )}
@@ -93,4 +101,43 @@ describe 'datomic_test::install' do
   it { should run_execute("unzip #{local_file_path} -d /home/datomic").with(
          :cwd => Chef::Config[:file_cache_path]
   )}
+
+  it { should run_execute("chown -R #{datomic_user}:#{datomic_user} #{temporary_zip_dir}")}
+
+  it { should create_java_service('configure datomic').with(
+           user: datomic_user,
+           working_dir: temporary_zip_dir,
+           pill_file_dir: temporary_zip_dir,
+           log_file: "#{temporary_zip_dir}/datomic.log"
+    )}
+  it { should enable_java_service 'configure datomic' }
+  it { should load_java_service 'configure datomic' }
+
+  it 'should call stop action for datomic when the template is changed' do
+    template_resource = chef_run.template(rendered_file)
+    expect(template_resource).to notify('datomic[stop datomic in preparation for start or restart]').to(:stop).immediately
+  end
+
+  it 'should call stop action for datomic when the java_service is changed' do
+    java_service_resource = chef_run.java_service('configure datomic')
+    expect(java_service_resource).to notify('datomic[stop datomic in preparation for start or restart]').to(:stop).immediately
+  end
+
+  context 'when the temporary zip directory already exists' do
+    before {
+      ::File.stub(:exists?).and_call_original # this says to call the orginal exists method for all calls
+      ::File.stub(:exists?).with(temporary_zip_dir).and_return(true) # BUT! when you get a call that matches this argument return true
+    }
+    it { should_not run_execute("unzip #{local_file_path} -d /home/datomic") }
+  end
+
+  context 'when the temporary directory is already owned by the datomic user' do
+    before {
+      ::File.stub_chain(:stat, :uid).and_return(100)
+      Etc.stub_chain(:getpwuid, :name).and_return(datomic_user)
+    }
+
+    it { should_not run_execute("chown -R #{datomic_user}:#{datomic_user} #{temporary_zip_dir}")}
+  end
+
 end

@@ -25,12 +25,10 @@
 #
 
 include_recipe 'java_service'
+datomic_user node[:datomic][:user]
 
-instance_name = node[:datomic][:user]
-
-datomic_user instance_name
-
-datomic instance_name do
-  version node[:datomic][:version]
-  action [:stop, :install, :start]
+datomic 'install datomic' do
+  datomic_user_name    node[:datomic][:user]
+  version              node[:datomic][:version]
 end
+

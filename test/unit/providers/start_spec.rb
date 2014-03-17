@@ -18,28 +18,11 @@ describe 'datomic_test::start' do
 
   context 'when datomic is not running' do
     let(:running) { false }
-    it { should create_java_service('datomic').with(
-           user: datomic_user,
-           working_dir: datomic_run_dir,
-           pill_file_dir: datomic_run_dir,
-           log_file: "#{datomic_run_dir}/datomic.log"
-    )}
-    it { should enable_java_service datomic_user }
-    it { should load_java_service datomic_user }
-    it { should start_java_service datomic_user }
+    it { should start_java_service 'start datomic' }
   end
 
   context 'when datomic is running' do
     let(:running) { true }
-
-    it { should_not create_java_service('datomic').with(
-           user: datomic_user,
-           working_dir: datomic_run_dir,
-           pill_file_dir: datomic_run_dir,
-           log_file: "#{datomic_run_dir}/datomic.log"
-    )}
-    it { should_not enable_java_service datomic_user }
-    it { should_not load_java_service datomic_user }
-    it { should_not start_java_service datomic_user }
+    it { should_not start_java_service 'start datomic' }
   end
 end

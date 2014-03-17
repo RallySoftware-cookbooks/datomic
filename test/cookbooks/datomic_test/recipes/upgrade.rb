@@ -1,5 +1,5 @@
-datomic node[:datomic][:user] do
+datomic 'upgrade datomic' do
+  datomic_user_name node[:datomic][:user]
   version '0.9.4324'
-  action [:stop, :install, :start]
 end
 
