@@ -136,9 +136,7 @@ describe 'status' do
       let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{new_version}.jar:blah:blah:blah" }
       its(:version_changing?) { should be_false }
     end
-
   end
-
 end
 
 class StatusLibraryWrapper

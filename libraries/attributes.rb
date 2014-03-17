@@ -3,7 +3,7 @@ module DatomicLibrary
     module Attributes
 
       def username
-        new_resource.name
+        new_resource.datomic_user_name
       end
 
       def home_dir

@@ -3,6 +3,8 @@ use_inline_resources
 include DatomicLibrary::Mixin::Attributes
 include DatomicLibrary::Mixin::Status
 
+require 'etc'
+
 action :install do
   remote_file local_file_path do
     source datomic_download_url
@@ -16,7 +18,9 @@ action :install do
     not_if { ::File.exists?(temporary_zip_dir) }
   end
 
-  execute "chown -R #{username}:#{username} #{temporary_zip_dir}"
+  execute "chown -R #{username}:#{username} #{temporary_zip_dir}" do
+    not_if { Etc.getpwuid(::File.stat(file).uid).name =~ /username/ }
+  end
 
   link datomic_run_dir do
     to temporary_zip_dir
@@ -36,8 +40,8 @@ action :install do
   if(protocol == 'sql')
     ojdbc_jar_url = node[:datomic][:ojdbc_jar_url]
 
-    raise 'You must set node[:datomic][:ojdbc_jar_url]' if ojdbc_jar_url.nil?
-    raise 'The sql protocol requires a datomic license, specify with node[:datomic][:datomic_license_key]' if node[:datomic][:datomic_license_key].nil?
+    Chef::Application.fatal! 'You must set node[:datomic][:ojdbc_jar_url]' if ojdbc_jar_url.nil?
+    Chef::Application.fatal! 'The sql protocol requires a datomic license, specify with node[:datomic][:datomic_license_key]' if node[:datomic][:datomic_license_key].nil?
 
     ojdbc_file = "#{datomic_run_dir}/lib/ojdbc.jar"
 
@@ -53,8 +57,13 @@ action :install do
   riak_bucket = node[:datomic][:riak_bucket]
 
   if(protocol == 'riak')
-    raise 'You must set node[:datomic][:riak_host]' if riak_host.nil?
-    raise 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
+    Chef::Application.fatal! 'You must set node[:datomic][:riak_host]' if riak_host.nil?
+    Chef::Application.fatal! 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
+  end
+
+
+  run_context.resource_collection.each do |resource|
+    puts "RESOURCE:#{resource}"
   end
 
   template "#{datomic_run_dir}/transactor.properties" do
@@ -81,13 +90,10 @@ action :install do
       :riak_bucket => riak_bucket
     })
   end
-end
 
-
-action :start do
   run_dir = datomic_run_dir # assign so that it can be passed into the proc
   java_service 'datomic' do
-    action [:create, :enable, :load, :start]
+    action [:create, :enable, :load]
     user username
     working_dir run_dir
     standard_options({:server => nil})
@@ -99,6 +105,17 @@ action :start do
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
     start_check { is_running? }
+  end
+
+  datomic "Ensure started" do
+    action :start
+  end
+end
+
+
+action :start do
+  java_service 'datomic' do
+    action [:start]
     not_if { is_running? }
   end
 end
