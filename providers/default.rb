@@ -19,7 +19,7 @@ action :install do
   end
 
   execute "chown -R #{username}:#{username} #{temporary_zip_dir}" do
-    not_if { Etc.getpwuid(::File.stat(file).uid).name =~ /username/ }
+    not_if { Etc.getpwuid(::File.stat(temporary_zip_dir).uid).name == username }
   end
 
   link datomic_run_dir do
@@ -61,11 +61,6 @@ action :install do
     Chef::Application.fatal! 'You must set node[:datomic][:riak_bucket]' if riak_bucket.nil?
   end
 
-
-  run_context.resource_collection.each do |resource|
-    puts "RESOURCE:#{resource}"
-  end
-
   template "#{datomic_run_dir}/transactor.properties" do
     source 'transactor.properties.erb'
     owner username
@@ -89,10 +84,12 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
+    notifies :restart, "datomic[start or restart datomic]"
   end
 
   run_dir = datomic_run_dir # assign so that it can be passed into the proc
-  java_service 'datomic' do
+  java_service 'configure datomic' do
+    service_name 'datomic'
     action [:create, :enable, :load]
     user username
     working_dir run_dir
@@ -105,10 +102,11 @@ action :install do
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
     start_check { is_running? }
+    notifies :restart, "datomic[start or restart datomic]"
   end
 
-  datomic "Ensure started" do
-    action :start
+  datomic "start or restart datomic" do
+    action :nothing
   end
 end
 
@@ -131,6 +129,6 @@ end
 
 action :restart do
   java_service 'datomic' do
-    action :restart
+    action [:restart]
   end
 end

@@ -1,0 +1,10 @@
+---
+driver_plugin: docker
+driver_config:
+  hostname: default-centos-64-x86-64
+  image: centos
+  socket: tcp://bld-docker-01.f4tech.com:4243
+  require_chef_omnibus: false
+  provision_command:
+  - "curl -L https://www.opscode.com/chef/install.sh | /bin/bash"
+  - "yum -y install unzip make gcc rsync which"
