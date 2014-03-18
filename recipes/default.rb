@@ -27,7 +27,7 @@
 include_recipe 'java_service'
 datomic_user node[:datomic][:user]
 
-datomic "install datomic" do
+datomic 'install datomic' do
   datomic_user_name    node[:datomic][:user]
   version              node[:datomic][:version]
 end

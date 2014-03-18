@@ -3,7 +3,8 @@ require_relative '../spec_helper'
 describe 'DatomicLibrary::Mixin::Attributes' do
 
   let(:instance_name) { 'test_instance' }
-  let(:new_resource) { DatomicResource.new(instance_name) }
+  let(:datomic_user_name) { 'datomic' }
+  let(:new_resource) { DatomicResource.new(instance_name, datomic_user_name) }
   let(:download_dir) { Chef::Config[:file_cache_path] }
   let(:download_url) { nil }
   let(:free) { true }
@@ -19,15 +20,15 @@ describe 'DatomicLibrary::Mixin::Attributes' do
 
   subject { AttributeLibraryWrapper.new(node, new_resource) }
 
-  its(:username) { should eql instance_name }
+  its(:username) { should eql datomic_user_name }
 
-  its(:home_dir) { should eql "/home/#{instance_name}" }
+  its(:home_dir) { should eql "/home/#{datomic_user_name}" }
 
-  its(:datomic_run_dir) { should eql "/home/#{instance_name}/datomic" }
+  its(:datomic_run_dir) { should eql "/home/#{datomic_user_name}/datomic" }
 
   its(:download_dir) { should eql download_dir }
 
-  its(:temporary_zip_dir) { should eql "/home/#{instance_name}/datomic-free-#{version}" }
+  its(:temporary_zip_dir) { should eql "/home/#{datomic_user_name}/datomic-free-#{version}" }
 
   context 'when node[:datomic][:free] is' do
     describe 'true' do
@@ -80,9 +81,11 @@ end
 class DatomicResource < Chef::Resource
 
   attr_accessor :version
+  attr_accessor :datomic_user_name
 
-  def initialize(name)
+  def initialize(name, datomic_user_name)
     super(name)
+    @datomic_user_name = datomic_user_name
   end
 
 end

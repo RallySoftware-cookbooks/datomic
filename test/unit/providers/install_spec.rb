@@ -1,4 +1,5 @@
 require_relative '../spec_helper'
+require 'etc'
 
 describe 'datomic_test::install' do
   let(:memory) { '84g' }
@@ -24,6 +25,12 @@ describe 'datomic_test::install' do
 
   let(:metrics_callback) { 'my-ns/my-callback' }
   let(:extra_jars) { ['http://google.com/extra.jar'] }
+
+  before {
+    Struct::Passwd.new('datomic', 'datomic', 0, 0, '/home/datomic', )
+    stat_stub = ::File.stub_chain(:stat, :uid).and_return(100)
+    Etc.stub(:getpwuid).and_return(datomic_user)
+  }
 
   subject(:chef_run) do
     ChefSpec::Runner.new(step_into: ['datomic', 'datomic_jars'], log_level: :error) do |node|

@@ -84,7 +84,7 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
-    notifies :restart, "datomic[start or restart datomic]"
+    notifies :restart, 'datomic[start or restart datomic]'
   end
 
   run_dir = datomic_run_dir # assign so that it can be passed into the proc
@@ -102,10 +102,10 @@ action :install do
     start_retries node[:datomic][:start_retries]
     start_delay node[:datomic][:start_delay]
     start_check { is_running? }
-    notifies :restart, "datomic[start or restart datomic]"
+    notifies :restart, 'datomic[start or restart datomic]'
   end
 
-  datomic "start or restart datomic" do
+  datomic 'start or restart datomic' do
     action :nothing
   end
 end

@@ -18,11 +18,11 @@ describe 'datomic_test::stop' do
 
   context 'when datomic is not running' do
     let(:running) { false }
-    it { should_not stop_java_service datomic_user }
+    it { should_not stop_java_service 'stop datomic' }
   end
 
   context 'when datomic is running' do
     let(:running) { true }
-    it { should stop_java_service datomic_user }
+    it { should stop_java_service 'stop datomic' }
   end
 end
