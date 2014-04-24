@@ -46,7 +46,7 @@ describe 'datomic_test::install' do
 
   let(:ojdbc_jar_path) { "#{temporary_zip_dir}/lib/ojdbc.jar" }
 
-  it { should create_remote_file(ojdbc_jar_path).with(owner: datomic_user) }
+  it { should create_remote_file_if_missing(ojdbc_jar_path).with(owner: datomic_user) }
 
   it { should create_template("#{temporary_zip_dir}/transactor.properties").with(
          owner: datomic_user,

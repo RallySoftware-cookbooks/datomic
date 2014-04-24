@@ -88,7 +88,7 @@ describe 'datomic_test::install' do
   let(:node) { chef_run.node }
   let(:local_file_path) { "#{Chef::Config[:file_cache_path]}/datomic-free-#{node[:datomic][:version]}.zip" }
 
-  it { should create_remote_file(local_file_path).with(
+  it { should create_remote_file_if_missing(local_file_path).with(
          owner: datomic_user,
          checksum: node[:datomic][:checksum]
   )}
