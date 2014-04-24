@@ -11,6 +11,7 @@ action :install do
     owner username
     group username
     checksum node[:datomic][:checksum]
+    action :create_if_missing
   end
 
   execute "unzip #{local_file_path} -d #{home_dir}" do
@@ -43,6 +44,7 @@ action :install do
       owner username
       group username
       checksum node[:datomic][:ojdbc_jar_checksum]
+      action :create_if_missing
     end
   end
 
