@@ -4,14 +4,16 @@ include DatomicLibrary::Mixin::Attributes
 include DatomicLibrary::Mixin::Status
 
 require 'etc'
+require 'digest'
 
 action :install do
   remote_file local_file_path do
     source datomic_download_url
     owner username
     group username
-    checksum node[:datomic][:checksum]
-    action :create_if_missing
+    checksum new_resource.checksum
+    action :create
+    not_if { ::File.exists?(local_file_path) && Digest::SHA256.file(local_file_path).hexdigest == new_resource.checksum }
   end
 
   execute "unzip #{local_file_path} -d #{home_dir}" do

@@ -1,7 +1,7 @@
 default[:datomic][:version] = '0.8.4215'
 default[:datomic][:free] = true
 
-default[:datomic][:checksum] = '88fda52a9a19'
+default[:datomic][:checksum] = '6272baf2de71b78bd07cbddd8e1a29b12520ac7a4d09a39791a9f2f2460563e8'
 default[:datomic][:user] = 'datomic'
 default[:datomic][:protocol] = 'free'
 

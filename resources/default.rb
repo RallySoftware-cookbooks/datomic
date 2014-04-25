@@ -3,6 +3,7 @@ default_action :install
 
 attribute :datomic_user_name, :kind_of => String
 attribute :version, :kind_of => String
+attribute :checksum, :kind_of => String
 
 def running=(running)
   @running = running
