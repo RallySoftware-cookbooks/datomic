@@ -7,7 +7,7 @@ require 'etc'
 require 'digest'
 
 action :install do
-  remote_file local_file_path do
+  remote_file local_file_path do #~FC021 - Foodcritic doesnt like our not_if block
     source datomic_download_url
     owner username
     group username
