@@ -4,7 +4,6 @@ include DatomicLibrary::Mixin::Attributes
 include DatomicLibrary::Mixin::Status
 
 require 'etc'
-require 'digest'
 
 action :install do
   remote_file local_file_path do
