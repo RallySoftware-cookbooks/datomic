@@ -9,4 +9,3 @@ version          IO.read(File.join(File.dirname(__FILE__), 'VERSION')) rescue '0
 supports 'centos'
 
 depends 'java_service', '~> 0.2'
-depends 'cookbook_profiler'

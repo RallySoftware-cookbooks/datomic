@@ -6,12 +6,14 @@ include DatomicLibrary::Mixin::Status
 require 'etc'
 
 action :install do
-  remote_file local_file_path do
-    source datomic_download_url
-    owner username
-    group username
+  
+  remote_file "downloading datomic-#{node[:datomic][:version]} to #{local_file_path}" do
+    path     local_file_path
+    source   datomic_download_url
+    owner    username
+    group    username
     checksum new_resource.checksum
-    action :create
+    action   :create
   end
 
   execute "unzip #{local_file_path} -d #{home_dir}" do
