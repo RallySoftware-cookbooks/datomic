@@ -12,7 +12,6 @@ platforms:
 suites:
 - name: install
   run_list:
-    - recipe[cookbook_profiler]
     - recipe[datomic::default]
   attributes:
     datomic:
@@ -22,7 +21,6 @@ suites:
           mx: 64m
 - name: upgrade
   run_list:
-    - recipe[cookbook_profiler]
     - recipe[datomic::default]
     - recipe[datomic_test::upgrade]
   attributes:
