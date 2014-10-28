@@ -6,6 +6,8 @@ describe 'DatomicLibrary::Mixin::Attributes' do
   let(:datomic_user_name) { 'datomic' }
   let(:new_resource) { DatomicResource.new(instance_name, datomic_user_name) }
   let(:download_dir) { Chef::Config[:file_cache_path] }
+  let(:download_user) { 'jpearson@rallydev.com' }
+  let(:download_credential) { 'aaaa-bbb-cccccc-dddddd' }
   let(:download_url) { nil }
   let(:free) { true }
   let(:version) { '12345' }
@@ -14,6 +16,8 @@ describe 'DatomicLibrary::Mixin::Attributes' do
     node = Chef::Node.new
     node.set[:datomic][:free] = free
     node.set[:datomic][:version] = version
+    node.set[:datomic][:download_user] = download_user
+    node.set[:datomic][:download_credential] = download_credential
     node.set[:datomic][:download_url] = download_url
     node
   end
@@ -29,6 +33,10 @@ describe 'DatomicLibrary::Mixin::Attributes' do
   its(:download_dir) { should eql download_dir }
 
   its(:temporary_zip_dir) { should eql "/home/#{datomic_user_name}/datomic-free-#{version}" }
+
+  its(:download_user) { should eql download_user }
+
+  its(:download_credential) { should eql download_credential }
 
   context 'when node[:datomic][:free] is' do
     describe 'true' do

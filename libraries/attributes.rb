@@ -34,6 +34,14 @@ module DatomicLibrary
         "#{download_dir}/datomic-#{full_version}.zip"
       end
 
+      def download_user
+        node[:datomic][:download_user]
+      end
+
+      def download_credential
+        node[:datomic][:download_credential]
+      end
+
       def datomic_download_url
         node[:datomic][:download_url] || "https://my.datomic.com/downloads/#{license_type}/#{version}"
       end

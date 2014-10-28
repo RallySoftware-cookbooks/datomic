@@ -1,3 +1,5 @@
+require 'base64'
+
 use_inline_resources
 
 include DatomicLibrary::Mixin::Attributes
@@ -6,10 +8,13 @@ include DatomicLibrary::Mixin::Status
 require 'etc'
 
 action :install do
-  
+
+  encoded_credentials = Base64.encode64("#{download_user}:#{download_credential}")
+
   remote_file "downloading datomic-#{node[:datomic][:version]} to #{local_file_path}" do
     path     local_file_path
     source   datomic_download_url
+    headers  Hash.new('Basic' => "Basic #{encoded_credentials}")
     owner    username
     group    username
     checksum new_resource.checksum
