@@ -11,7 +11,7 @@ action :install do
 
   encoded_credentials = Base64.encode64("#{download_user}:#{download_credential}")
 
-  remote_file "downloading datomic-#{node[:datomic][:version]} to #{local_file_path}" do
+  remote_file "downloading datomic-#{node[:datomic][:version]} to #{local_file_path}" do #~FC009
     path     local_file_path
     source   datomic_download_url
     headers  Hash.new('Basic' => "Basic #{encoded_credentials}")

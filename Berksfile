@@ -1,6 +1,8 @@
 source 'http://berks.f4tech.com'
 source 'http://api.berkshelf.com'
 
+cookbook 'bluepill', github: 'RallySoftware-cookbooks/bluepill'
+
 metadata
 
 group :test do
