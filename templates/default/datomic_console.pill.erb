@@ -1,4 +1,13 @@
 # -*- mode: ruby -*-
+
+# Ensure system environment is incorporated into Ruby environment
+# Inspired by http://stackoverflow.com/a/12303443
+sourced_env = `/bin/bash -c 'source "<%= node[:datomic][:environment_file] %>" && env'`
+sourced_env.split("\n").each do |line|
+  key, value = line.split("=", 2)
+  ENV[key] ||= value unless value.nil? or value.empty?
+end
+
 Bluepill.application("<%= @name %>", :foreground => false, :log_file => "/var/log/bluepill_<%= @name %>.log") do |app|
   app.process("<%= @name %>") do |process|
     process.working_dir             = "<%= @working_dir %>"
