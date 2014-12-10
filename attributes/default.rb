@@ -1,4 +1,4 @@
-default[:datomic][:version] = '0.8.4215'
+default[:datomic][:version] = '0.9.5078'
 default[:datomic][:free] = true
 
 default[:datomic][:checksum] = '6272baf2de71b78bd07cbddd8e1a29b12520ac7a4d09a39791a9f2f2460563e8'
