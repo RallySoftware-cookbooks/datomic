@@ -86,39 +86,40 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
-    notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
   end
 
-  run_dir = temporary_zip_dir # assign so that it can be passed into the proc
-  java_service 'configure datomic' do
-    service_name 'datomic'
-    action [:create, :enable, :load]
-    user username
-    working_dir run_dir
-    standard_options({:server => nil})
-    main_class 'clojure.main'
-    classpath Proc.new { Mixlib::ShellOut.new('bin/classpath', :cwd => run_dir).run_command.stdout.strip }
-    args(['--main', 'datomic.launcher', 'transactor.properties'])
-    pill_file_dir run_dir
-    log_file "#{run_dir}/datomic.log"
-    start_retries node[:datomic][:start_retries]
-    start_delay node[:datomic][:start_delay]
-    start_check { is_running? }
-    notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
-  end
+  if node[:datomic][:service_install]
+    run_dir = temporary_zip_dir # assign so that it can be passed into the proc
+    java_service 'configure datomic' do
+      service_name 'datomic'
+      action [:create, :enable, :load]
+      user username
+      working_dir run_dir
+      standard_options({:server => nil})
+      main_class 'clojure.main'
+      classpath Proc.new { Mixlib::ShellOut.new('bin/classpath', :cwd => run_dir).run_command.stdout.strip }
+      args(['--main', 'datomic.launcher', 'transactor.properties'])
+      pill_file_dir run_dir
+      log_file "#{run_dir}/datomic.log"
+      start_retries node[:datomic][:start_retries]
+      start_delay node[:datomic][:start_delay]
+      start_check { is_running? }
+      notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
+    end
 
-  datomic 'stop datomic in preparation for start or restart' do
-    action :nothing
-  end
+    datomic 'stop datomic in preparation for start or restart' do
+      action :nothing
+    end
 
-  datomic 'start datomic from install action' do
-    action :start
-  end
+    datomic 'start datomic from install action' do
+      action :start
+    end
 
-  link datomic_run_dir do
-    to temporary_zip_dir
-    owner username
-    group username
+    link datomic_run_dir do
+      to temporary_zip_dir
+      owner username
+      group username
+    end
   end
 end
 

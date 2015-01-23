@@ -32,6 +32,8 @@ See `attributes/default.rb` for default values
 * `node[:datomic][:concurrency][:write]` = Write concurrency.  Number of threads.  See datomic documentation.
 * `node[:datomic][:concurrency][:read]` = Read concurrency.  Number of threads.  Suggest 2x write-concurrency.  See datomic documentation.
 * `node[:datomic][:memcached_hosts]` = List of memcached hosts.  Format: host:port(,host:port)*
+* `node[:datomic][:service_install]` = Should the datomic app be installed as a
+  service? Default is true
 
 ## Recipes
 ###default

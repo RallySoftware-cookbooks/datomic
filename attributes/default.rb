@@ -48,4 +48,6 @@ default[:datomic][:memory_index_threshold] = '512m'
 default[:datomic][:memory_index_max] = '1g'
 default[:datomic][:object_cache_max] = '2g'
 
+default[:datomic][:service_install] = true
+
 default[:bluepill][:version] = '0.0.68'
