@@ -113,11 +113,6 @@ describe 'datomic_test::install' do
   it { should enable_java_service 'configure datomic' }
   it { should load_java_service 'configure datomic' }
 
-  it 'should call stop action for datomic when the template is changed' do
-    template_resource = chef_run.template(rendered_file)
-    expect(template_resource).to notify('datomic[stop datomic in preparation for start or restart]').to(:stop).immediately
-  end
-
   it 'should call stop action for datomic when the java_service is changed' do
     java_service_resource = chef_run.java_service('configure datomic')
     expect(java_service_resource).to notify('datomic[stop datomic in preparation for start or restart]').to(:stop).immediately
