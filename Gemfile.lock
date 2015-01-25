@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/adnichols/kitchen-docker.git
-  revision: 62a09b8d88e232e689c2b27d53e94c496a20d365
-  ref: docker-ruby-api
-  specs:
-    kitchen-docker (0.13.0)
-      docker-api (~> 1.7)
-      test-kitchen (>= 1.0.0.rc.2)
-
-GIT
   remote: https://github.com/RallySoftware-cookbooks/cookbook-development
   revision: 564dc422ef358c6ecbcdb43251e5aa2e6d2976e4
   specs:
@@ -319,5 +310,4 @@ PLATFORMS
 
 DEPENDENCIES
   cookbook-development!
-  kitchen-docker!
   rspec-its

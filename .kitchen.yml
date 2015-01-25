@@ -24,10 +24,6 @@ suites:
     - recipe[datomic::default]
   attributes:
     datomic:
-      java:
-        '-X':
-          ms: 64m
-          mx: 64m
       service_install: false
 - name: upgrade
   run_list:
