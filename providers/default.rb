@@ -86,6 +86,7 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
+      notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
   end
 
   if node[:datomic][:service_install]
@@ -107,10 +108,6 @@ action :install do
       notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
     end
 
-    datomic 'stop datomic in preparation for start or restart' do
-      action :nothing
-    end
-
     datomic 'start datomic from install action' do
       action :start
     end
@@ -121,6 +118,11 @@ action :install do
       group username
     end
   end
+
+  datomic 'stop datomic in preparation for start or restart' do
+    action :nothing
+  end
+
 end
 
 action :start do
