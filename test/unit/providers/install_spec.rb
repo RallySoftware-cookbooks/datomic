@@ -50,6 +50,7 @@ describe 'datomic_test::install' do
       node.set[:datomic][:object_cache_max] = object_cache_max
       node.set[:datomic][:metrics_callback] = metrics_callback
       node.set[:datomic][:extra_jars] = extra_jars
+      node.set[:datomic][:service_install] = true
     end.converge described_recipe
   end
 

@@ -124,18 +124,18 @@ describe 'status' do
     end
 
     context 'when process running and new version specified' do
-      its(:version_changing?) { should be_true }
+      its(:version_changing?) { should be true }
     end
 
     context 'when process not running' do
       let(:stdout) { nil }
       let(:status_code) { 1 }
-      its(:version_changing?) { should be_true }
+      its(:version_changing?) { should be true }
     end
 
     context 'when process running the same version' do
       let(:stdout) { "blah:blah:blah:datomic-pro-transactor-#{new_version}.jar:blah:blah:blah" }
-      its(:version_changing?) { should be_false }
+      its(:version_changing?) { should be false }
     end
   end
 end
