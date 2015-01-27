@@ -86,7 +86,7 @@ action :install do
       :riak_host => riak_host,
       :riak_bucket => riak_bucket
     })
-      notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
+    notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
   end
 
   if node[:datomic][:service_install]
