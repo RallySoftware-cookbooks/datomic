@@ -111,12 +111,12 @@ action :install do
     datomic 'start datomic from install action' do
       action :start
     end
+  end
 
-    link datomic_run_dir do
-      to temporary_zip_dir
-      owner username
-      group username
-    end
+  link datomic_run_dir do
+    to temporary_zip_dir
+    owner username
+    group username
   end
 
   datomic 'stop datomic in preparation for start or restart' do
