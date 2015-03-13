@@ -9,4 +9,9 @@ describe 'datomic::default' do
     its(:exit_status) { should eq(0) }
     its(:stdout) { should match(/datomic-free-transactor-0\.8\.4215/) }
   end
+
+  describe file('/home/datomic/datomic-free-0.8.4215/bin/logback.xml') do
+    its(:content) { should match ".log.gz" }
+    its(:content) { should match "<prudent>false" }
+  end
 end
