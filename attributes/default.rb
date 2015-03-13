@@ -37,6 +37,8 @@ default[:datomic][:java][:'-D'][:'com.sun.management.jmxremote.authenticate'] = 
 default[:datomic][:concurrency][:write] = 4
 default[:datomic][:concurrency][:read] = 8
 
+default[:datomic][:compress_log_files] = true
+
 default[:datomic][:memcached_hosts] = nil
 
 default[:datomic][:start_retries] = 200

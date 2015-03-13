@@ -89,6 +89,16 @@ action :install do
     notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
   end
 
+  template "#{temporary_zip_dir}/bin/logback.xml" do
+    source 'logback.xml.erb'
+    owner username
+    group username
+    cookbook 'datomic'
+    mode 0644
+    variables :compress_log_files => node[:datomic][:compress_log_files]
+    notifies :stop, 'datomic[stop datomic in preparation for start or restart]', :immediately
+  end
+
   if node[:datomic][:service_install]
     run_dir = temporary_zip_dir # assign so that it can be passed into the proc
     java_service 'configure datomic' do
